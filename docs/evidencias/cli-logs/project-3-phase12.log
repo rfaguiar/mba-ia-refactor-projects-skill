@@ -1,0 +1,455 @@
+● skill(refactor-arch)
+
+● Read anti-patterns-catalog.md
+  │ .github\skills\refactor-arch\references\anti-patterns-catalog.md
+  └ 134 lines read
+
+● Read report-template.md
+  │ .github\skills\refactor-arch\references\report-template.md
+  └ 49 lines read
+
+● Get-ChildItem -Recurse -File -Exclude *.pyc | ? { $_.FullName -notmatch                     (shel…
+  '\\(\.venv|\.git|__pycache__|node_modules)\\' } | % {
+  "$($_.FullName.Substring((Get-Location).Path.Length)) $($_.Length)" }; Test-Path ..\reports
+  │ Get-ChildItem -Recurse -File -Exclude *.pyc | ? { $_.FullName -notmatch
+  │ '\\(\.venv|\.git|__pycache__|node_modules)\\' } | % {
+  │ "$($_.FullName.Substring((Get-Location).Path.Length)) $($_.Length)" }; Test-Path ..\reports
+  └ 24 lines…
+
+Now the source files with line numbers.
+
+● foreach($f in 'app.py','database.py','requirements.txt','README.md','models\__init__.py','models\c
+  egory.py','models\task.py','models\user.py','services\notification_service.py','utils\helpers.py')
+  "##### $f"; $i=0; Get-Content $f | % { $i++; "$i`: $_" } }
+  │ foreach($f in
+  │ 'app.py','database.py','requirements.txt','README.md','models\__init__.py','models\category.py',
+  │ 'models\task.py','models\user.py','services\notification_service.py','utils\helpers.py'){ "#####
+  │ $f"; $i=0; Get-Content $f | % { $i++; "$i`: $_" } }
+  └ 352 lines…
+
+● foreach($f in 'routes\task_routes.py','routes\user_routes.py'){ "##### $f"; $i=0; Get-Content $f |
+  { $i++; "$i`: $_" } }
+  │ foreach($f in 'routes\task_routes.py','routes\user_routes.py'){ "##### $f"; $i=0; Get-Content $f
+  │ | % { $i++; "$i`: $_" } }
+  └ 512 lines…
+
+✗ foreach($f in 'routes\report_routes.py','seed.py'){ "##### $f"; $i=0; Get-Content $f | % { $i++;
+  "$i`: $_" } }; (Get-Content routes\__init__.py,services\__init__.py,utils\__init__.py) -join '|';
+  Get-Content -Recurse -ErrorAction SilentlyContinue .env* | Out-Null
+  │ foreach($f in 'routes\report_routes.py','seed.py'){ "##### $f"; $i=0; Get-Content $f | % { $i++;
+  │ "$i`: $_" } }; (Get-Content routes\__init__.py,services\__init__.py,utils\__init__.py) -join
+  │ '|'; Get-Content -Recurse -ErrorAction SilentlyContinue .env* | Out-Null
+  └ ##### routes\report_routes.py
+    1: from flask import Blueprint, request, jsonify
+    2: from database import db
+    3: from models.task import Task
+    4: from models.user import User
+    5: from models.category import Category
+    6: from datetime import datetime, timedelta
+    7: from utils.helpers import format_date, calculate_percentage
+    8: import json
+    9:
+    10: report_bp = Blueprint('reports', __name__)
+    11:
+    12: @report_bp.route('/reports/summary', methods=['GET'])
+    13: def summary_report():
+    14:
+    15:     total_tasks = Task.query.count()
+    16:     total_users = User.query.count()
+    17:     total_categories = Category.query.count()
+    18:
+    19:     pending = Task.query.filter_by(status='pending').count()
+    20:     in_progress = Task.query.filter_by(status='in_progress').count()
+    21:     done = Task.query.filter_by(status='done').count()
+    22:     cancelled = Task.query.filter_by(status='cancelled').count()
+    23:
+    24:     p1 = Task.query.filter_by(priority=1).count()
+    25:     p2 = Task.query.filter_by(priority=2).count()
+    26:     p3 = Task.query.filter_by(priority=3).count()
+    27:     p4 = Task.query.filter_by(priority=4).count()
+    28:     p5 = Task.query.filter_by(priority=5).count()
+    29:
+    30:     all_tasks = Task.query.all()
+    31:     overdue_count = 0
+    32:     overdue_list = []
+    33:     for t in all_tasks:
+    34:         if t.due_date:
+    35:             if t.due_date < datetime.utcnow():
+    36:                 if t.status != 'done' and t.status != 'cancelled':
+    37:                     overdue_count = overdue_count + 1
+    38:                     overdue_list.append({
+    39:                         'id': t.id,
+    40:                         'title': t.title,
+    41:                         'due_date': str(t.due_date),
+    42:                         'days_overdue': (datetime.utcnow() - t.due_date).days
+    43:                     })
+    44:
+    45:     seven_days_ago = datetime.utcnow() - timedelta(days=7)
+    46:     recent_tasks = Task.query.filter(Task.created_at >= seven_days_ago).count()
+    47:
+    48:     recent_done = Task.query.filter(
+    49:         Task.status == 'done',
+    50:         Task.updated_at >= seven_days_ago
+    51:     ).count()
+    52:
+    53:     users = User.query.all()
+    54:     user_stats = []
+    55:     for u in users:
+    56:         user_tasks = Task.query.filter_by(user_id=u.id).all()
+    57:         total = len(user_tasks)
+    58:         completed = 0
+    59:         for t in user_tasks:
+    60:             if t.status == 'done':
+    61:                 completed = completed + 1
+    62:         user_stats.append({
+    63:             'user_id': u.id,
+    64:             'user_name': u.name,
+    65:             'total_tasks': total,
+    66:             'completed_tasks': completed,
+    67:             'completion_rate': round((completed / total) * 100, 2) if total > 0 else 0
+    68:         })
+    69:
+    70:     report = {
+    71:         'generated_at': str(datetime.utcnow()),
+    72:         'overview': {
+    73:             'total_tasks': total_tasks,
+    74:             'total_users': total_users,
+    75:             'total_categories': total_categories,
+    76:         },
+    77:         'tasks_by_status': {
+    78:             'pending': pending,
+    79:             'in_progress': in_progress,
+    80:             'done': done,
+    81:             'cancelled': cancelled,
+    82:         },
+    83:         'tasks_by_priority': {
+    84:             'critical': p1,
+    85:             'high': p2,
+    86:             'medium': p3,
+    87:             'low': p4,
+    88:             'minimal': p5,
+    89:         },
+    90:         'overdue': {
+    91:             'count': overdue_count,
+    92:             'tasks': overdue_list,
+    93:         },
+    94:         'recent_activity': {
+    95:             'tasks_created_last_7_days': recent_tasks,
+    96:             'tasks_completed_last_7_days': recent_done,
+    97:         },
+    98:         'user_productivity': user_stats,
+    99:     }
+    100:
+    101:     return jsonify(report), 200
+    102:
+    103: @report_bp.route('/reports/user/<int:user_id>', methods=['GET'])
+    104: def user_report(user_id):
+    105:     user = User.query.get(user_id)
+    106:     if not user:
+    107:         return jsonify({'error': 'Usuário não encontrado'}), 404
+    108:
+    109:     tasks = Task.query.filter_by(user_id=user_id).all()
+    110:
+    111:     total = len(tasks)
+    112:     done = 0
+    113:     pending = 0
+    114:     in_progress = 0
+    115:     cancelled = 0
+    116:     overdue = 0
+    117:     high_priority = 0
+    118:
+    119:     for t in tasks:
+    120:         if t.status == 'done':
+    121:             done = done + 1
+    122:         elif t.status == 'pending':
+    123:             pending = pending + 1
+    124:         elif t.status == 'in_progress':
+    125:             in_progress = in_progress + 1
+    126:         elif t.status == 'cancelled':
+    127:             cancelled = cancelled + 1
+    128:
+    129:         if t.priority <= 2:
+    130:             high_priority = high_priority + 1
+    131:
+    132:         if t.due_date:
+    133:             if t.due_date < datetime.utcnow():
+    134:                 if t.status != 'done' and t.status != 'cancelled':
+    135:                     overdue = overdue + 1
+    136:
+    137:     report = {
+    138:         'user': {
+    139:             'id': user.id,
+    140:             'name': user.name,
+    141:             'email': user.email,
+    142:         },
+    143:         'statistics': {
+    144:             'total_tasks': total,
+    145:             'done': done,
+    146:             'pending': pending,
+    147:             'in_progress': in_progress,
+    148:             'cancelled': cancelled,
+    149:             'overdue': overdue,
+    150:             'high_priority': high_priority,
+    151:             'completion_rate': round((done / total) * 100, 2) if total > 0 else 0
+    152:         }
+    153:     }
+    154:
+    155:     return jsonify(report), 200
+    156:
+    157: @report_bp.route('/categories', methods=['GET'])
+    158: def get_categories():
+    159:     categories = Category.query.all()
+    160:     result = []
+    161:     for c in categories:
+    162:         cat_data = c.to_dict()
+    163:         cat_data['task_count'] = Task.query.filter_by(category_id=c.id).count()
+    164:         result.append(cat_data)
+    165:     return jsonify(result), 200
+    166:
+    167: @report_bp.route('/categories', methods=['POST'])
+    168: def create_category():
+    169:     data = request.get_json()
+    170:     if not data:
+    171:         return jsonify({'error': 'Dados inválidos'}), 400
+    172:
+    173:     name = data.get('name')
+    174:     if not name:
+    175:         return jsonify({'error': 'Nome é obrigatório'}), 400
+    176:
+    177:     category = Category()
+    178:     category.name = name
+    179:     category.description = data.get('description', '')
+    180:     category.color = data.get('color', '#000000')
+    181:
+    182:     try:
+    183:         db.session.add(category)
+    184:         db.session.commit()
+    185:         return jsonify(category.to_dict()), 201
+    186:     except:
+    187:         db.session.rollback()
+    188:         return jsonify({'error': 'Erro ao criar categoria'}), 500
+    189:
+    190: @report_bp.route('/categories/<int:cat_id>', methods=['PUT'])
+    191: def update_category(cat_id):
+    192:     cat = Category.query.get(cat_id)
+    193:     if not cat:
+    194:         return jsonify({'error': 'Categoria não encontrada'}), 404
+    195:
+    196:     data = request.get_json()
+    197:     if 'name' in data:
+    198:         cat.name = data['name']
+    199:     if 'description' in data:
+    200:         cat.description = data['description']
+    201:     if 'color' in data:
+    202:         cat.color = data['color']
+    203:
+    204:     try:
+    205:         db.session.commit()
+    206:         return jsonify(cat.to_dict()), 200
+    207:     except:
+    208:         db.session.rollback()
+    209:         return jsonify({'error': 'Erro ao atualizar'}), 500
+    210:
+    211: @report_bp.route('/categories/<int:cat_id>', methods=['DELETE'])
+    212: def delete_category(cat_id):
+    213:     cat = Category.query.get(cat_id)
+    214:     if not cat:
+    215:         return jsonify({'error': 'Categoria não encontrada'}), 404
+    216:
+    217:     try:
+    218:         db.session.delete(cat)
+    219:         db.session.commit()
+    220:         return jsonify({'message': 'Categoria deletada'}), 200
+    221:     except:
+    222:         db.session.rollback()
+    223:         return jsonify({'error': 'Erro ao deletar'}), 500
+    ##### seed.py
+    1: """Script para popular o banco com dados iniciais"""
+    2: from app import app, db
+    3: from models.task import Task
+    4: from models.user import User
+    5: from models.category import Category
+    6: from datetime import datetime, timedelta
+    7:
+    8: def seed_data():
+    9:     with app.app_context():
+    10:
+    11:         Task.query.delete()
+    12:         User.query.delete()
+    13:         Category.query.delete()
+    14:         db.session.commit()
+    15:
+    16:         u1 = User()
+    17:         u1.name = 'João Silva'
+    18:         u1.email = 'joao@email.com'
+    19:         u1.set_password('1234')
+    20:         u1.role = 'admin'
+    21:         db.session.add(u1)
+    22:
+    23:         u2 = User()
+    24:         u2.name = 'Maria Santos'
+    25:         u2.email = 'maria@email.com'
+    26:         u2.set_password('abcd')
+    27:         u2.role = 'user'
+    28:         db.session.add(u2)
+    29:
+    30:         u3 = User()
+    31:         u3.name = 'Pedro Oliveira'
+    32:         u3.email = 'pedro@email.com'
+    33:         u3.set_password('pass')
+    34:         u3.role = 'manager'
+    35:         db.session.add(u3)
+    36:
+    37:         db.session.commit()
+    38:
+    39:         c1 = Category()
+    40:         c1.name = 'Backend'
+    41:         c1.description = 'Tarefas de backend'
+    42:         c1.color = '#3498db'
+    43:         db.session.add(c1)
+    44:
+    45:         c2 = Category()
+    46:         c2.name = 'Frontend'
+    47:         c2.description = 'Tarefas de frontend'
+    48:         c2.color = '#2ecc71'
+    49:         db.session.add(c2)
+    50:
+    51:         c3 = Category()
+    52:         c3.name = 'DevOps'
+    53:         c3.description = 'Tarefas de infraestrutura'
+    54:         c3.color = '#e74c3c'
+    55:         db.session.add(c3)
+    56:
+    57:         c4 = Category()
+    58:         c4.name = 'Bug'
+    59:         c4.description = 'Correção de bugs'
+    60:         c4.color = '#e67e22'
+    61:         db.session.add(c4)
+    62:
+    63:         db.session.commit()
+    64:
+    65:         tasks_data = [
+    66:             {'title': 'Implementar autenticação JWT', 'description': 'Adicionar autenticação
+    real com JWT', 'status': 'pending', 'priority': 1, 'user_id': u1.id, 'category_id': c1.id,
+    'due_date': datetime.utcnow() - timedelta(days=3)},
+    67:             {'title': 'Criar tela de login', 'description': 'Tela de login responsiva',
+    'status': 'in_progress', 'priority': 2, 'user_id': u2.id, 'category_id': c2.id, 'due_date':
+    datetime.utcnow() + timedelta(days=5)},
+    68:             {'title': 'Configurar CI/CD', 'description': 'Pipeline com GitHub Actions',
+    'status': 'done', 'priority': 2, 'user_id': u3.id, 'category_id': c3.id, 'tags':
+    'devops,ci,github'},
+    69:             {'title': 'Corrigir bug no filtro de busca', 'description': 'Filtro não funciona
+    com caracteres especiais', 'status': 'pending', 'priority': 1, 'user_id': u1.id, 'category_id':
+    c4.id, 'due_date': datetime.utcnow() - timedelta(days=1)},
+    70:             {'title': 'Adicionar paginação na API', 'description': 'Endpoints retornam todos
+    os registros', 'status': 'pending', 'priority': 3, 'user_id': u1.id, 'category_id': c1.id,
+    'due_date': datetime.utcnow() + timedelta(days=10)},
+    71:             {'title': 'Escrever testes unitários', 'description': 'Cobertura mínima de 80%',
+    'status': 'pending', 'priority': 2, 'user_id': u2.id, 'category_id': c1.id},
+    72:             {'title': 'Documentar API com Swagger', 'description': 'Gerar documentação
+    automática', 'status': 'cancelled', 'priority': 4, 'user_id': u3.id, 'category_id': c1.id},
+    73:             {'title': 'Refatorar models', 'description': 'Melhorar organização dos models',
+    'status': 'in_progress', 'priority': 3, 'user_id': u2.id, 'category_id': c1.id, 'tags':
+    'refactor,tech-debt'},
+    74:             {'title': 'Configurar monitoramento', 'description': 'Prometheus + Grafana',
+    'status': 'pending', 'priority': 4, 'user_id': u3.id, 'category_id': c3.id, 'due_date':
+    datetime.utcnow() + timedelta(days=20)},
+    75:             {'title': 'Melhorar validações de input', 'description': 'Usar marshmallow ou
+    pydantic', 'status': 'pending', 'priority': 3, 'user_id': u1.id, 'category_id': c1.id, 'tags':
+    'improvement,validation'},
+    76:         ]
+    77:
+    78:         for td in tasks_data:
+    79:             t = Task()
+    80:             t.title = td['title']
+    81:             t.description = td['description']
+    82:             t.status = td['status']
+    83:             t.priority = td['priority']
+    84:             t.user_id = td['user_id']
+    85:             t.category_id = td['category_id']
+    86:             if 'due_date' in td:
+    87:                 t.due_date = td['due_date']
+    88:             if 'tags' in td:
+    89:                 t.tags = td['tags']
+    90:             db.session.add(t)
+    91:
+    92:         db.session.commit()
+    93:         print("Seed concluído com sucesso!")
+    94:         print(f"  {User.query.count()} usuários")
+    95:         print(f"  {Category.query.count()} categorias")
+    96:         print(f"  {Task.query.count()} tasks")
+    97:
+    98: if __name__ == '__main__':
+    99:     seed_data()
+    ||
+    Get-Content:
+    Line |
+    2 |  … _init__.py,utils\__init__.py) -join '|'; Get-Content -Recurse -ErrorA …
+    |                                                         ~~~~~~~~
+    | Não foi possível encontrar um parâmetro correspondente ao nome de parâmetro 'Recurse'.
+    Failed with exit code 1
+
+● Create audit-project-3.md +109
+  └ ~\AppData\Local\Temp\stage\reports\audit-project-3.md
+
+```text
+================================
+PHASE 1: PROJECT ANALYSIS
+================================
+Language:      Python
+Framework:     Flask 3.0.0
+Dependencies:  flask-sqlalchemy 3.1.1, flask-cors 4.0.0, marshmallow, requests, python-dotenv (these three are not used)
+Domain:        Task manager API (tasks, users, categories, reports)
+Architecture:  Partial layering (models/, routes/, services/, utils/). There are no controllers, business logic sits in the routes, and the services layer is unused.
+Source files:  15 files analyzed
+DB tables:     users, tasks, categories (SQLite)
+Endpoints:     22 (/, /health, 7 tasks, 7 users + /login, 2 reports, 4 categories)
+================================
+```
+
+I read all 15 source files and checked them against the catalog.
+
+```text
+================================
+ARCHITECTURE AUDIT REPORT
+================================
+Project: task-manager-api
+Stack:   Python + Flask 3.0.0 (Flask-SQLAlchemy 3.1.1, SQLite)
+Files:   15 analyzed | ~1160 lines of code
+
+## Summary
+CRITICAL: 3 | HIGH: 2 | MEDIUM: 6 | LOW: 4
+
+## Findings (short form; line numbers and details are in the report file)
+[CRITICAL] AP-01 Hardcoded secrets (SECRET_KEY, SMTP password) and debug=True: app.py:13,34; services/notification_service.py:9-10
+[CRITICAL] AP-04 Destructive endpoints and role changes with no authentication: routes/user_routes.py:119-125,134-151; routes/task_routes.py:225-238; routes/report_routes.py:211-223
+[CRITICAL] AP-05 md5 passwords, password hash returned in API responses, fake token: models/user.py:21,29,32; routes/user_routes.py:85-86,129,207-210
+[HIGH] AP-07 Business logic in routes, no controllers, NotificationService unused
+[HIGH] AP-09 /categories CRUD lives in report_routes; duplicated serialization and validation
+[MEDIUM] AP-10 N+1 queries
+[MEDIUM] AP-11 Bare `except:` and `print` for errors, no central handler
+[MEDIUM] AP-12 Missing input validation
+[MEDIUM] AP-13 "Overdue" rule duplicated in 6 places, plus dead helpers
+[MEDIUM] AP-14 Deleting a category or user leaves inconsistent or orphaned data
+[MEDIUM] AP-15 Config hardcoded
+[LOW] AP-16 Magic numbers
+[LOW] AP-17 Unused imports, `print` as log, one-letter names
+[LOW] DP-01 datetime.utcnow()
+[LOW] DP-01 Model.query.get()
+================================
+Total: 15 findings
+================================
+```
+
+I found no SQL injection. The `LIKE` search goes through the ORM and is parameterized.
+
+The full report is saved at `C:\Users\rfagu\AppData\Local\Temp\stage\reports\audit-project-3.md`. I changed no project files.
+
+Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
+
+
+
+Changes    +109 -0
+AI Credits 21.31 (1m 4s)
+Tokens     ↑ 300.3k (258.1k cached, 42.2k written) • ↓ 8.2k (2.0k reasoning)
+Resume     copilot --resume=44f64c8c-954b-4ae5-9436-95209d862532

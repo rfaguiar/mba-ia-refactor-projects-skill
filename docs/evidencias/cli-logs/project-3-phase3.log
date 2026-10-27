@@ -1,0 +1,344 @@
+● Read mvc-guidelines.md
+  │ .github\skills\refactor-arch\references\mvc-guidelines.md
+  └ 74 lines read
+
+● Read refactoring-playbook.md
+  │ .github\skills\refactor-arch\references\refactoring-playbook.md
+  └ 380 lines read
+
+● .venv\Scripts\pip list 2>&1 | Select-String -Pattern "flask|sqlalchemy|werkzeug|itsdangerous"; (s…
+  Get-ChildItem -Recurse -Filter *.db | % FullName; .venv\Scripts\python --version
+  │ .venv\Scripts\pip list 2>&1 | Select-String -Pattern "flask|sqlalchemy|werkzeug|itsdangerous";
+  │ Get-ChildItem -Recurse -Filter *.db | % FullName; .venv\Scripts\python --version
+  └ 7 lines…
+
+● .venv\Scripts\python seed.py 2>&1 | Select-Object -Last 5; Get-ChildItem -Recurse -Filter *.db (s…
+  -Exclude .venv | % FullName; New-Item -ItemType Directory -Force
+  c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files | Out-Null
+  │ .venv\Scripts\python seed.py 2>&1 | Select-Object -Last 5; Get-ChildItem -Recurse -Filter *.db
+  │ -Exclude .venv | % FullName; New-Item -ItemType Directory -Force
+  │ c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files | Out-Null
+  └ 6 lines…
+
+Legacy DB created. Now a baseline script (stored outside the project).
+
+● Create probe.py +58
+  └ c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\probe.py
+
+● Copy-Item instance\tasks.db
+  c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\legacy.db -Force;
+  Start-Process -FilePath .venv\Scripts\python.exe -ArgumentList 'app.py' -RedirectStandardOutput
+  ..\app_base.log -RedirectStandardError ..\app_base.err -WindowStyle Hidden -PassThru | Select Id;
+  Start-Sleep 4; .venv\Scripts\python
+  c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\probe.py
+  c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\base.json
+  │ Copy-Item instance\tasks.db
+  │ c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\legacy.db
+  │ -Force; Start-Process -FilePath .venv\Scripts\python.exe -ArgumentList 'app.py'
+  │ -RedirectStandardOutput ..\app_base.log -RedirectStandardError ..\app_base.err -WindowStyle
+  │ Hidden -PassThru | Select Id; Start-Sleep 4; .venv\Scripts\python …
+  └ 37 lines…
+
+● Get-NetTCPConnection -LocalPort 5000 -State Listen -ErrorAction SilentlyContinue | % { Stop-Proces
+  -Id $_.OwningProcess -Force }; Stop-Process -Id 32284 -Force -ErrorAction SilentlyContinue;
+  Start-Sleep 1; Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | measure | %
+  Count
+  │ Get-NetTCPConnection -LocalPort 5000 -State Listen -ErrorAction SilentlyContinue | % {
+  │ Stop-Process -Id $_.OwningProcess -Force }; Stop-Process -Id 32284 -Force -ErrorAction
+  │ SilentlyContinue; Start-Sleep 1; Get-NetTCPConnection -LocalPort 5000 -ErrorAction
+  │ SilentlyContinue | measure | % Count
+  └ 1 line…
+
+● Start-Sleep 2; Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | select (shell)
+  State,OwningProcess
+  │ Start-Sleep 2; Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | select
+  │ State,OwningProcess
+  └ 3 lines…
+
+● Get-Process -Id 26308 | select Id,ProcessName,Path; Get-CimInstance Win32_Process -Filter (shell)
+  "ProcessId=26308" | select ParentProcessId,CommandLine
+  │ Get-Process -Id 26308 | select Id,ProcessName,Path; Get-CimInstance Win32_Process -Filter
+  │ "ProcessId=26308" | select ParentProcessId,CommandLine
+  └ 5 lines…
+
+● Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | select State,OwningProcess (…
+  │ Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | select State,OwningProcess
+  └ 3 lines…
+
+● curl.exe -s -m 3 ]8;id=md-1szxpu6;http://127.0.0.1:5000/healthhttp://127.0.0.1:5000/health]8;;]8;;; Get-CimInstance Win32_Process -Filter ]8;;(shell)
+  "Name='python.exe'" | select ProcessId,ParentProcessId,CommandLine | fl
+  │ curl.exe -s -m 3 http://127.0.0.1:5000/health; Get-CimInstance Win32_Process -Filter
+  │ "Name='python.exe'" | select ProcessId,ParentProcessId,CommandLine | fl
+  └ 12 lines…
+
+● Stop-Process -Id 2436,23748 -Force; Start-Sleep 2; curl.exe -s -m 3 ]8;id=md-1szxpu6;http://127.0.0.1:5000/healthhttp://127.0.0.1:5000/health]8;;]8;;; ]8;;
+  "done"
+  │ Stop-Process -Id 2436,23748 -Force; Start-Sleep 2; curl.exe -s -m 3
+  │ http://127.0.0.1:5000/health; "done"
+  └ 1 line…
+
+● Remove-Item database.py, utils\helpers.py, routes\task_routes.py, routes\user_routes.py,         …
+  routes\report_routes.py, models\task.py, models\user.py, models\category.py, models\__init__.py,
+  app.py, services\notification_service.py, seed.py; .venv\Scripts\pip list 2>&1 | Select-String
+  dotenv; New-Item -ItemType Directory config, controllers, middlewares | Out-Null; "ok"
+  │ Remove-Item database.py, utils\helpers.py, routes\task_routes.py, routes\user_routes.py,
+  │ routes\report_routes.py, models\task.py, models\user.py, models\category.py, models\__init__.py,
+  │ app.py, services\notification_service.py, seed.py; .venv\Scripts\pip list 2>&1 | Select-String
+  │ dotenv; New-Item -ItemType Directory config, controllers, middlewares | Out-Null; "ok"
+  └ 2 lines…
+
+● Create settings.py +22
+  └ config\settings.py
+
+● Create constants.py +26
+  └ config\constants.py
+
+● Create __init__.py +1
+  └ config\__init__.py
+
+● Create .env.example +11
+
+● Create dates.py +6
+  └ utils\dates.py
+
+● Create __init__.py +1
+  └ middlewares\__init__.py
+
+● Create validators.py +45
+  └ utils\validators.py
+
+● Create __init__.py +1
+  └ controllers\__init__.py
+
+● Create error_handler.py +51
+  └ middlewares\error_handler.py
+
+● Edit validators.py +2 -1
+  └ utils\validators.py
+
+● Edit error_handler.py +6 -2
+  └ middlewares\error_handler.py
+
+● Create auth.py +31
+  └ middlewares\auth.py
+
+● Create base.py +29
+  └ models\base.py
+
+● Create database.py +3
+  └ models\database.py
+
+● Create __init__.py +5
+  └ models\__init__.py
+
+● Create category.py +23
+  └ models\category.py
+
+● Edit error_handler.py +1
+  └ middlewares\error_handler.py
+
+● Create user.py +56
+  └ models\user.py
+
+● Create task.py +126
+  └ models\task.py
+
+● Edit category.py +4
+  └ models\category.py
+
+● Create task_controller.py +168
+  └ controllers\task_controller.py
+
+● Edit task_controller.py +5 -5
+  └ controllers\task_controller.py
+
+● Edit task.py +7
+  └ models\task.py
+
+● Edit task_controller.py +4 -1
+  └ controllers\task_controller.py
+
+● Edit task_controller.py -1
+  └ controllers\task_controller.py
+
+● Create user_controller.py +160
+  └ controllers\user_controller.py
+
+● Edit user_controller.py +1 -1
+  └ controllers\user_controller.py
+
+● Create category_controller.py +57
+  └ controllers\category_controller.py
+
+● Create health_controller.py +11
+  └ controllers\health_controller.py
+
+● Create report_controller.py +103
+  └ controllers\report_controller.py
+
+● Create task_routes.py +13
+  └ routes\task_routes.py
+
+● Create user_routes.py +13
+  └ routes\user_routes.py
+
+● Create category_routes.py +10
+  └ routes\category_routes.py
+
+● Create report_routes.py +8
+  └ routes\report_routes.py
+
+● Create health_routes.py +8
+  └ routes\health_routes.py
+
+● Create notification_service.py +51
+  └ services\notification_service.py
+
+● Create app.py +36
+
+● Edit app.py +1 -3
+
+● Create seed.py +82
+
+● $s='c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files'; Copy-Item
+  $s\legacy.db instance\tasks.db -Force; Start-Process .venv\Scripts\python.exe -ArgumentList 'app.p
+  -RedirectStandardOutput ..\app_new.log -RedirectStandardError ..\app_new.err -WindowStyle Hidden;
+  Start-Sleep 4; .venv\Scripts\python $s\probe.py $s\new.json | Out-Null; Get-Content ..\app_new.err
+  Select -Last 15; .venv\Scripts\python -c "
+  import json
+  a=json.load(open(r'$s\base.json'));b=json.load(open(r'$s\new.json'))
+  for x,y in zip(a,b):
+      if x!=y: print('DIFF',x['req'],x['status'],y['status']); print('
+  ',json.dumps(x['shape'])[:300]); print(' ',json.dumps(y['shape'])[:300])
+  print('compared',len(a))
+  "
+  │ $s='c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files';
+  │ Copy-Item $s\legacy.db instance\tasks.db -Force; Start-Process .venv\Scripts\python.exe
+  │ -ArgumentList 'app.py' -RedirectStandardOutput ..\app_new.log -RedirectStandardError
+  │ ..\app_new.err -WindowStyle Hidden; Start-Sleep 4; .venv\Scripts\python $s\probe.py
+  │ $s\new.json | Out-Null; Get-Content ..\app_new.err | Select -Last 15; .venv\Scripts\python -c …
+  └ 39 lines…
+
+● $j='-H','Content-Type: application/json';
+  "relogin:"; curl.exe -s -o NUL -w "%{http_code}`n" @j -d
+  '{\"email\":\"joao@email.com\",\"password\":\"1234\"}' ]8;id=md-12778ad;http://127.0.0.1:5000/loginhttp://127.0.0.1:5000/login]8;;
+  "wrong:"; curl.exe -s -o NUL -w "%{http_code}`n" @j -d
+  '{\"email\":\"joao@email.com\",\"password\":\"12345\"}' ]8;id=md-12778ad;http://127.0.0.1:5000/loginhttp://127.0.0.1:5000/login]8;;
+  "bad priority str:"; curl.exe -s -w " %{http_code}`n" @j -d '{\"title\":\"abc\",\"priority\":\"x\"
+  ]8;id=md-1hofuzu;http://127.0.0.1:5000/taskshttp://127.0.0.1:5000/tasks]8;;
+  "bad search:"; curl.exe -s -w " %{http_code}`n" "]8;id=md-uzx00l;http://127.0.0.1:5000/tasks/search?priority=xhttp://127.0.0.1:5000/tasks/search?priority=x]8;;]8;;"]8;;
+  "cat put empty:"; curl.exe -s -w " %{http_code}`n" -X PUT ]8;id=md-1ko1syo;http://127.0.0.1:5000/categories/1http://127.0.0.1:5000/categories/1]8;;
+  "404 route:"; curl.exe -s -o NUL -w "%{http_code}`n" ]8;id=md-16jaku8;http://127.0.0.1:5000/nopehttp://127.0.0.1:5000/nope]8;;
+  .venv\Scripts\python -c "import sqlite3;print([r[0][:12] for r in
+  sqlite3.connect('instance/tasks.db').execute('select password from users')])"
+  Get-CimInstance Win32_Process -Filter "Name='python.exe'" | ? CommandLine -like
+  '*task-manager-api*app.py*' | % { Stop-Process -Id $_.ProcessId -Force }; Start-Sleep 1; curl.exe
+  -m 2 ]8;id=md-1szxpu6;http://127.0.0.1:5000/healthhttp://127.0.0.1:5000/health]8;;]8;;; "stopped" ]8;;
+  │ $j='-H','Content-Type: application/json';
+  │ "relogin:"; curl.exe -s -o NUL -w "%{http_code}`n" @j -d
+  │ '{\"email\":\"joao@email.com\",\"password\":\"1234\"}' http://127.0.0.1:5000/login
+  │ "wrong:"; curl.exe -s -o NUL -w "%{http_code}`n" @j -d
+  │ '{\"email\":\"joao@email.com\",\"password\":\"12345\"}' http://127.0.0.1:5000/login…
+  └ 28 lines…
+
+● $env:ADMIN_TOKEN='tok'; @'
+  from app import create_app
+  c = create_app().test_client()
+  print('relogin', c.post('/login', json={'email':'joao@email.com','password':'1234'}).status_code)
+  print('wrong', c.post('/login', json={'email':'joao@email.com','password':'zzzz'}).status_code)
+  print('md5 maria', c.post('/login', json={'email':'maria@email.com','password':'abcd'}).status_cod
+  print('bad prio', c.post('/tasks', json={'title':'abc','priority':'x'}).get_json())
+  print('del no token', c.delete('/tasks/3').status_code)
+  print('del token', c.delete('/tasks/3', headers={'X-Admin-Token':'tok'}).status_code)
+  print('role no token', c.put('/users/3', json={'role':'user'}).status_code)
+  print('name no token', c.put('/users/3', json={'name':'Pedro O'}).status_code)
+  print('token', c.post('/login',
+  json={'email':'joao@email.com','password':'1234'}).get_json()['token'][:20])
+  '@ | .venv\Scripts\python -
+  $env:ADMIN_TOKEN=''; $env:APP_ENV='production'; .venv\Scripts\python -c "
+  from app import create_app
+  c=create_app().test_client(); print('prod no token', c.delete('/tasks/4').status_code)" 2>&1 |
+  Select -Last 1
+  │ $env:ADMIN_TOKEN='tok'; @'
+  │ from app import create_app
+  │ c = create_app().test_client()
+  │ print('relogin', c.post('/login',
+  │ json={'email':'joao@email.com','password':'1234'}).status_code)…
+  └ 26 lines…
+
+Now verify CRITICAL findings via search and cleanup.
+
+/ Search (grep)
+  │ "super-secret|senha123|fake-jwt|md5|debug=True|utcnow\(\)|\.query\.get\(|except:|print\(" in
+  │ **/*.py
+  └ 21 lines found
+
+● Get-ChildItem -Recurse -Filter __pycache__ -Directory | ? FullName -notmatch '\\.venv\\' |
+  Remove-Item -Recurse -Force; Remove-Item ..\app_base.*,..\app_new.* -ErrorAction SilentlyContinue;
+  Copy-Item c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\legacy.
+  instance\tasks.db -Force; Get-ChildItem -Recurse -File -Exclude *.pyc | ? { $_.FullName -notmatch
+  '\\(\.venv|\.github)\\' } | % { $_.FullName.Substring((Get-Location).Path.Length) }
+  │ Get-ChildItem -Recurse -Filter __pycache__ -Directory | ? FullName -notmatch '\\.venv\\' |
+  │ Remove-Item -Recurse -Force; Remove-Item ..\app_base.*,..\app_new.* -ErrorAction
+  │ SilentlyContinue; Copy-Item
+  │ c:\Users\rfagu\.copilot\session-state\44f64c8c-954b-4ae5-9436-95209d862532\files\legacy.db
+  │ instance\tasks.db -Force; Get-ChildItem -Recurse -File -Exclude *.pyc | ? { $_.FullName …
+  └ 36 lines…
+
+● Edit README.md +8
+
+```text
+================================
+PHASE 3: REFACTORING COMPLETE
+================================
+## New Project Structure
+app.py (create_app, entry point) · seed.py · .env.example
+config/       settings.py, constants.py
+models/       database.py, base.py, task.py, user.py, category.py
+routes/       task, user, category, report, health  (URL → controller)
+controllers/  task, user, category, report, health
+middlewares/  error_handler.py, auth.py
+services/     notification_service.py
+utils/        dates.py, validators.py
+
+## Changes Applied
+AP-01/AP-15 → config/settings.py reads environment variables; debug is off by default; no secrets in the code
+AP-04 → admin_required on the three DELETEs and on PUT /users when it changes role or active (PB-10)
+AP-05 → scrypt hashing; legacy md5/plain passwords still log in and are re-hashed on login; password removed from responses; signed token
+AP-07/09 → controllers added; /categories moved to its own routes file and controller; serialization and validation centralized
+AP-10 → joinedload and GROUP BY queries replace the per-row queries
+AP-11/12 → central error handler returns JSON; priority, date and query-parameter input is validated
+AP-13/16/17 → is_overdue used everywhere; constants; logging instead of print; unused helpers and imports removed
+DP-01 → utcnow helper and db.session.get replace the deprecated calls
+
+## Validation
+  ✓ Application boots without errors
+  ✓ All endpoints respond correctly (32/32 baseline calls, same status codes and JSON structure; the only differences are the removed password field)
+  ✓ CRITICAL findings fixed: 3/3 (verified by search; the only md5 left is the legacy login check)
+  ✓ Login works on a database created by the original version (md5 passwords)
+  ✓ Admin token tested: 403 without or with a wrong token, 200 with it, 403 in production with no token set
+
+## Intentional behavior changes
+- `password` is no longer in the responses of POST /users, GET /users/<id>, PUT /users/<id> and /login (AP-05).
+- The login `token` is now a signed token instead of `fake-jwt-token-<id>`.
+- Debug now defaults to off (AP-01).
+- DELETE /tasks, /users, /categories and PUT /users with `role` or `active` check `X-Admin-Token` (AP-04). If `ADMIN_TOKEN` isn't set, they still work outside production and log a warning. In production they return 403.
+- Invalid types that used to cause 500 errors now return 400: string priority, non-numeric `priority` or `user_id` in /tasks/search, empty body on PUT /categories, non-boolean `active`, empty `name`.
+
+## Remaining findings
+- No real authentication or authorization on any route (out of scope).
+- Category `color` is not validated, because rejecting values would change what the API accepts today.
+- AP-14 correction: for categories, SQLAlchemy already clears `category_id` on a category's tasks when it is deleted, so that part of the finding was a false positive. User deletion now cascades to their tasks in one transaction.
+- `NotificationService` is still not wired into any route. I kept it and moved its credentials to configuration.
+- `requirements.txt` lists `marshmallow` and `requests`, which nothing uses. I did not touch it.
+================================
+```
+
+I stopped the app. I restored `instance\tasks.db` to the original seeded legacy database.
+
+
+
+Changes    +1363 -14
+AI Credits 94.71 (6m 9s)
+Tokens     ↑ 2.6m (2.5m cached, 95.1k written) • ↓ 45.6k (12.0k reasoning)
+Resume     copilot --resume=44f64c8c-954b-4ae5-9436-95209d862532

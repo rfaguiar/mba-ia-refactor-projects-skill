@@ -1,0 +1,112 @@
+##### Saída real do Copilot CLI — Fases 1 e 2
+```text
+================================
+PHASE 1: PROJECT ANALYSIS
+================================
+Language:      Python
+Framework:     Flask 3.1.1
+Dependencies:  flask-cors 5.0.1, sqlite3 (stdlib)
+Domain:        API de e-commerce (produtos, usuários, pedidos, relatórios)
+Architecture:  Monolito plano: app.py (rotas + admin inline), controllers.py (handlers com regra e SQL), models.py (SQL concatenado + regra + serialização), database.py (conexão global + DDL + seed)
+Source files:  4 files analyzed
+DB tables:     produtos, usuarios, pedidos, itens_pedido
+Endpoints:     18 (produtos 6, usuarios 3 + login, pedidos 4, relatorios 1, health, "/", admin 2)
+================================
+```
+
+Fase 2: relatório completo salvo em `C:\Users\rfagu\AppData\Local\Temp\stage\reports\audit-project-1.md`.
+
+```text
+================================
+ARCHITECTURE AUDIT REPORT
+================================
+Project: code-smells-project
+Stack:   Python + Flask 3.1.1
+Files:   4 analyzed | ~780 lines of code
+
+## Summary
+CRITICAL: 5 | HIGH: 3 | MEDIUM: 6 | LOW: 2
+
+[CRITICAL] SQL Injection (AP-02) — models.py (todas as queries concatenadas)
+[CRITICAL] Endpoints admin sem autenticação (AP-04) — app.py:47-78
+[CRITICAL] Senhas em texto puro e expostas na API (AP-05) — database.py:75-79, models.py:83,99,109-111,126-129
+[CRITICAL] Segredos hardcoded e debug fixo (AP-01) — app.py:7,8,88; controllers.py:286-289
+[CRITICAL] God Module (AP-03) — models.py, app.py, database.py
+[HIGH] Lógica de negócio/SQL nos controllers (AP-07) — controllers.py
+[HIGH] Estado global mutável (AP-08) — database.py:4-10
+[HIGH] Responsabilidades fora do lugar (AP-09)
+[MEDIUM] N+1 (AP-10); erros genéricos duplicados (AP-11); validação ausente (AP-12); duplicação (AP-13); sem transação/FK (AP-14); config fixa (AP-15)
+[LOW] Magic numbers (AP-16); prints como log e imports mortos (AP-17)
+
+Deprecated APIs: none found
+Total: 16 findings
+================================
+```
+
+Nenhum arquivo do projeto foi alterado.
+
+Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
+
+
+
+
+##### Saída real do Copilot CLI — Fase 3 (após confirmação y)
+```text
+================================
+PHASE 3: REFACTORING COMPLETE
+================================
+## New Project Structure
+code-smells-project/
+├── app.py                       # composition root (create_app)
+├── .env.example
+├── config/        settings.py, constants.py
+├── models/        database.py, produto_model.py, usuario_model.py,
+│                  pedido_model.py, sistema_model.py, admin_model.py
+├── views/         produto_, usuario_, pedido_, sistema_views.py (blueprints)
+├── controllers/   produto_, usuario_, pedido_, sistema_controller.py
+├── services/      pedido_service, relatorio_service, notificacao_service
+├── middlewares/   error_handler.py, auth.py (admin_required)
+└── utils/         errors.py, validators.py, security.py, http.py
+(removidos: models.py, controllers.py, database.py antigos)
+
+## Changes Applied
+AP-01/15 → config via env, sem segredos; debug off por padrão (PB-01)
+AP-02 → queries 100% parametrizadas (PB-02)
+AP-05 → hash pbkdf2 com migração transparente de senha legada; `senha` removida das respostas (PB-11)
+AP-03/07/09 → camadas models/views/controllers/services (PB-03/04)
+AP-08 → conexão por requisição (flask.g) + init_db no boot (PB-05)
+AP-10 → N+1 eliminado com JOIN/json_each (PB-06)
+AP-12/13 → validadores e serializadores únicos (PB-08/09)
+AP-14 → criação de pedido transacional com rollback (PB-12)
+AP-11 → error handler central (PB-07)
+AP-04 → /admin/* protegidos por flag + token (PB-10)
+AP-16/17 → constantes, logging no lugar de print (PB-13)
+
+## Validation
+  ✓ Application boots without errors (servidor real: /produtos 200, /health 200)
+  ✓ All endpoints respond correctly (18/18 existentes respondem; mesmos status e estrutura, exceto diferenças intencionais abaixo)
+  ✓ CRITICAL findings fixed: 5/5 (busca: sem segredos literais, sem SQL concatenado, sem print/except genérico)
+  ✓ Compatibilidade: banco legado (senha em texto puro) permite login e é regravado com hash
+  ✓ SQL injection em login e busca testada e neutralizada
+
+## Intentional behavior changes
+- GET /usuarios e /usuarios/<id>: campo `senha` removido (AP-05)
+- GET /health: removidos `secret_key` e `debug`; `db_path` agora só o nome do arquivo (AP-01)
+- POST /admin/reset-db e /admin/query: 403 por padrão; habilitar com ENABLE_ADMIN_ENDPOINTS=1 + ADMIN_TOKEN e header X-Admin-Token (AP-04)
+- Erros inesperados: 500 com mensagem genérica (antes vazava str(e)) (AP-11)
+- Entradas inválidas que davam 500 agora dão 400 (tipos errados, JSON inválido, itens de pedido malformados, quantidade ≤ 0, preco_min/max não numéricos) (AP-12)
+- Nomes com aspas (ex.: `Ok'Nome`) agora criam o produto (201) em vez de 500
+- PUT /produtos/<id> agora aplica as mesmas validações da criação (nome 2–200 caracteres, categoria válida)
+- Segredo, debug e porta vêm de variáveis de ambiente; debug desligado por padrão
+
+## Remaining findings
+- Sem autenticação/autorização real nas demais rotas e sem token de sessão no login (fora do escopo)
+- Cancelar pedido só registra log; o estoque não é devolvido (comportamento original)
+- Sem chaves estrangeiras; deletar produto deixa itens órfãos (mudar schema em bancos existentes exige migração)
+- Checagem de estoque e baixa não são atômicas contra requisições concorrentes
+================================
+```
+
+
+
+

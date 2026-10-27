@@ -1,0 +1,797 @@
+[
+ {
+  "name": "index",
+  "method": "GET",
+  "path": "/",
+  "status": 200,
+  "shape": {
+   "endpoints": {
+    "health": "str",
+    "login": "str",
+    "pedidos": "str",
+    "produtos": "str",
+    "relatorios": "str",
+    "usuarios": "str"
+   },
+   "mensagem": "str",
+   "versao": "str"
+  },
+  "body": {
+   "endpoints": {
+    "health": "/health",
+    "login": "/login",
+    "pedidos": "/pedidos",
+    "produtos": "/produtos",
+    "relatorios": "/relatorios/vendas",
+    "usuarios": "/usuarios"
+   },
+   "mensagem": "Bem-vindo à API da Loja",
+   "versao": "1.0.0"
+  }
+ },
+ {
+  "name": "health",
+  "method": "GET",
+  "path": "/health",
+  "status": 200,
+  "shape": {
+   "ambiente": "str",
+   "counts": {
+    "pedidos": "int",
+    "produtos": "int",
+    "usuarios": "int"
+   },
+   "database": "str",
+   "db_path": "str",
+   "debug": "bool",
+   "status": "str",
+   "versao": "str"
+  },
+  "body": {
+   "counts": {
+    "pedidos": 0,
+    "produtos": 10,
+    "usuarios": 3
+   },
+   "database": "connected",
+   "db_path": "loja.db",
+   "status": "ok",
+   "versao": "1.0.0"
+  }
+ },
+ {
+  "name": "listar produtos",
+  "method": "GET",
+  "path": "/produtos",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "ativo": "int",
+     "categoria": "str",
+     "criado_em": "str",
+     "descricao": "str",
+     "estoque": "int",
+     "id": "int",
+     "nome": "str",
+     "preco": "float"
+    }
+   ],
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": [
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Notebook potente para jogos",
+     "estoque": 10,
+     "id": 1,
+     "nome": "Notebook Gamer",
+     "preco": 5999.99
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Mouse sem fio ergonômico",
+     "estoque": 50,
+     "id": 2,
+     "nome": "Mouse Wireless",
+     "preco": 89.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Teclado mecânico RGB",
+     "estoque": 30,
+     "id": 3,
+     "nome": "Teclado Mecânico",
+     "preco": 299.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Monitor 27 polegadas 144hz",
+     "estoque": 15,
+     "id": 4,
+     "nome": "Monitor 27''",
+     "preco": 1899.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Headset com microfone",
+     "estoque": 25,
+     "id": 5,
+     "nome": "Headset Gamer",
+     "preco": 199.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "moveis",
+     "descricao": "Cadeira ergonômica",
+     "estoque": 8,
+     "id": 6,
+     "nome": "Cadeira Gamer",
+     "preco": 1299.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Webcam 1080p",
+     "estoque": 20,
+     "id": 7,
+     "nome": "Webcam HD",
+     "preco": 249.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Hub USB 3.0 7 portas",
+     "estoque": 40,
+     "id": 8,
+     "nome": "Hub USB",
+     "preco": 79.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "SSD NVMe 1TB",
+     "estoque": 35,
+     "id": 9,
+     "nome": "SSD 1TB",
+     "preco": 449.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "vestuario",
+     "descricao": "Camiseta estampa código",
+     "estoque": 100,
+     "id": 10,
+     "nome": "Camiseta Dev",
+     "preco": 59.9
+    }
+   ],
+   "sucesso": true
+  }
+ },
+ {
+  "name": "produto 1",
+  "method": "GET",
+  "path": "/produtos/1",
+  "status": 200,
+  "shape": {
+   "dados": {
+    "ativo": "int",
+    "categoria": "str",
+    "criado_em": "str",
+    "descricao": "str",
+    "estoque": "int",
+    "id": "int",
+    "nome": "str",
+    "preco": "float"
+   },
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "ativo": 1,
+    "categoria": "informatica",
+    "descricao": "Notebook potente para jogos",
+    "estoque": 10,
+    "id": 1,
+    "nome": "Notebook Gamer",
+    "preco": 5999.99
+   },
+   "sucesso": true
+  }
+ },
+ {
+  "name": "produto inexistente",
+  "method": "GET",
+  "path": "/produtos/999",
+  "status": 404,
+  "shape": {
+   "erro": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "erro": "Produto não encontrado",
+   "sucesso": false
+  }
+ },
+ {
+  "name": "busca por termo",
+  "method": "GET",
+  "path": "/produtos/busca?q=Mouse",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "ativo": "int",
+     "categoria": "str",
+     "criado_em": "str",
+     "descricao": "str",
+     "estoque": "int",
+     "id": "int",
+     "nome": "str",
+     "preco": "float"
+    }
+   ],
+   "sucesso": "bool",
+   "total": "int"
+  },
+  "body": {
+   "dados": [
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Mouse sem fio ergonômico",
+     "estoque": 50,
+     "id": 2,
+     "nome": "Mouse Wireless",
+     "preco": 89.9
+    }
+   ],
+   "sucesso": true,
+   "total": 1
+  }
+ },
+ {
+  "name": "busca com filtros",
+  "method": "GET",
+  "path": "/produtos/busca?categoria=informatica&preco_min=100&preco_max=3000",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "ativo": "int",
+     "categoria": "str",
+     "criado_em": "str",
+     "descricao": "str",
+     "estoque": "int",
+     "id": "int",
+     "nome": "str",
+     "preco": "float"
+    }
+   ],
+   "sucesso": "bool",
+   "total": "int"
+  },
+  "body": {
+   "dados": [
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Teclado mecânico RGB",
+     "estoque": 30,
+     "id": 3,
+     "nome": "Teclado Mecânico",
+     "preco": 299.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Monitor 27 polegadas 144hz",
+     "estoque": 15,
+     "id": 4,
+     "nome": "Monitor 27''",
+     "preco": 1899.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Headset com microfone",
+     "estoque": 25,
+     "id": 5,
+     "nome": "Headset Gamer",
+     "preco": 199.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "Webcam 1080p",
+     "estoque": 20,
+     "id": 7,
+     "nome": "Webcam HD",
+     "preco": 249.9
+    },
+    {
+     "ativo": 1,
+     "categoria": "informatica",
+     "descricao": "SSD NVMe 1TB",
+     "estoque": 35,
+     "id": 9,
+     "nome": "SSD 1TB",
+     "preco": 449.9
+    }
+   ],
+   "sucesso": true,
+   "total": 5
+  }
+ },
+ {
+  "name": "criar produto",
+  "method": "POST",
+  "path": "/produtos",
+  "status": 201,
+  "shape": {
+   "dados": {
+    "id": "int"
+   },
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "id": 11
+   },
+   "mensagem": "Produto criado",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "criar produto invalido",
+  "method": "POST",
+  "path": "/produtos",
+  "status": 400,
+  "shape": {
+   "erro": "str"
+  },
+  "body": {
+   "erro": "Preço não pode ser negativo"
+  }
+ },
+ {
+  "name": "atualizar produto",
+  "method": "PUT",
+  "path": "/produtos/1",
+  "status": 200,
+  "shape": {
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "mensagem": "Produto atualizado",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "deletar produto",
+  "method": "DELETE",
+  "path": "/produtos/{produto_id}",
+  "status": 200,
+  "shape": {
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "mensagem": "Produto deletado",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "listar usuarios",
+  "method": "GET",
+  "path": "/usuarios",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "criado_em": "str",
+     "email": "str",
+     "id": "int",
+     "nome": "str",
+     "tipo": "str"
+    }
+   ],
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": [
+    {
+     "email": "admin@loja.com",
+     "id": 1,
+     "nome": "Admin",
+     "tipo": "admin"
+    },
+    {
+     "email": "joao@email.com",
+     "id": 2,
+     "nome": "João Silva",
+     "tipo": "cliente"
+    },
+    {
+     "email": "maria@email.com",
+     "id": 3,
+     "nome": "Maria Santos",
+     "tipo": "cliente"
+    }
+   ],
+   "sucesso": true
+  }
+ },
+ {
+  "name": "usuario 1",
+  "method": "GET",
+  "path": "/usuarios/1",
+  "status": 200,
+  "shape": {
+   "dados": {
+    "criado_em": "str",
+    "email": "str",
+    "id": "int",
+    "nome": "str",
+    "tipo": "str"
+   },
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "email": "admin@loja.com",
+    "id": 1,
+    "nome": "Admin",
+    "tipo": "admin"
+   },
+   "sucesso": true
+  }
+ },
+ {
+  "name": "usuario inexistente",
+  "method": "GET",
+  "path": "/usuarios/999",
+  "status": 404,
+  "shape": {
+   "erro": "str"
+  },
+  "body": {
+   "erro": "Usuário não encontrado"
+  }
+ },
+ {
+  "name": "criar usuario",
+  "method": "POST",
+  "path": "/usuarios",
+  "status": 201,
+  "shape": {
+   "dados": {
+    "id": "int"
+   },
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "id": 4
+   },
+   "sucesso": true
+  }
+ },
+ {
+  "name": "criar usuario invalido",
+  "method": "POST",
+  "path": "/usuarios",
+  "status": 400,
+  "shape": {
+   "erro": "str"
+  },
+  "body": {
+   "erro": "Nome, email e senha são obrigatórios"
+  }
+ },
+ {
+  "name": "login ok",
+  "method": "POST",
+  "path": "/login",
+  "status": 200,
+  "shape": {
+   "dados": {
+    "email": "str",
+    "id": "int",
+    "nome": "str",
+    "tipo": "str"
+   },
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "email": "admin@loja.com",
+    "id": 1,
+    "nome": "Admin",
+    "tipo": "admin"
+   },
+   "mensagem": "Login OK",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "login invalido",
+  "method": "POST",
+  "path": "/login",
+  "status": 401,
+  "shape": {
+   "erro": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "erro": "Email ou senha inválidos",
+   "sucesso": false
+  }
+ },
+ {
+  "name": "login com SQL injection",
+  "method": "POST",
+  "path": "/login",
+  "status": 200,
+  "shape": {
+   "dados": {
+    "email": "str",
+    "id": "int",
+    "nome": "str",
+    "tipo": "str"
+   },
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "email": "admin@loja.com",
+    "id": 1,
+    "nome": "Admin",
+    "tipo": "admin"
+   },
+   "mensagem": "Login OK",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "criar pedido",
+  "method": "POST",
+  "path": "/pedidos",
+  "status": 201,
+  "shape": {
+   "dados": {
+    "pedido_id": "int",
+    "total": "float"
+   },
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "pedido_id": 1,
+    "total": 6179.79
+   },
+   "mensagem": "Pedido criado com sucesso",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "criar pedido sem itens",
+  "method": "POST",
+  "path": "/pedidos",
+  "status": 400,
+  "shape": {
+   "erro": "str"
+  },
+  "body": {
+   "erro": "Pedido deve ter pelo menos 1 item"
+  }
+ },
+ {
+  "name": "listar pedidos",
+  "method": "GET",
+  "path": "/pedidos",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "criado_em": "str",
+     "id": "int",
+     "itens": [
+      {
+       "preco_unitario": "float",
+       "produto_id": "int",
+       "produto_nome": "str",
+       "quantidade": "int"
+      }
+     ],
+     "status": "str",
+     "total": "float",
+     "usuario_id": "int"
+    }
+   ],
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": [
+    {
+     "id": 1,
+     "itens": [
+      {
+       "preco_unitario": 5999.99,
+       "produto_id": 1,
+       "produto_nome": "Notebook Gamer",
+       "quantidade": 1
+      },
+      {
+       "preco_unitario": 89.9,
+       "produto_id": 2,
+       "produto_nome": "Mouse Wireless",
+       "quantidade": 2
+      }
+     ],
+     "status": "pendente",
+     "total": 6179.79,
+     "usuario_id": 2
+    }
+   ],
+   "sucesso": true
+  }
+ },
+ {
+  "name": "pedidos do usuario",
+  "method": "GET",
+  "path": "/pedidos/usuario/2",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "criado_em": "str",
+     "id": "int",
+     "itens": [
+      {
+       "preco_unitario": "float",
+       "produto_id": "int",
+       "produto_nome": "str",
+       "quantidade": "int"
+      }
+     ],
+     "status": "str",
+     "total": "float",
+     "usuario_id": "int"
+    }
+   ],
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": [
+    {
+     "id": 1,
+     "itens": [
+      {
+       "preco_unitario": 5999.99,
+       "produto_id": 1,
+       "produto_nome": "Notebook Gamer",
+       "quantidade": 1
+      },
+      {
+       "preco_unitario": 89.9,
+       "produto_id": 2,
+       "produto_nome": "Mouse Wireless",
+       "quantidade": 2
+      }
+     ],
+     "status": "pendente",
+     "total": 6179.79,
+     "usuario_id": 2
+    }
+   ],
+   "sucesso": true
+  }
+ },
+ {
+  "name": "atualizar status",
+  "method": "PUT",
+  "path": "/pedidos/1/status",
+  "status": 200,
+  "shape": {
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "mensagem": "Status atualizado",
+   "sucesso": true
+  }
+ },
+ {
+  "name": "status invalido",
+  "method": "PUT",
+  "path": "/pedidos/1/status",
+  "status": 400,
+  "shape": {
+   "erro": "str"
+  },
+  "body": {
+   "erro": "Status inválido"
+  }
+ },
+ {
+  "name": "relatorio de vendas",
+  "method": "GET",
+  "path": "/relatorios/vendas",
+  "status": 200,
+  "shape": {
+   "dados": {
+    "desconto_aplicavel": "float",
+    "faturamento_bruto": "float",
+    "faturamento_liquido": "float",
+    "pedidos_aprovados": "int",
+    "pedidos_cancelados": "int",
+    "pedidos_pendentes": "int",
+    "ticket_medio": "float",
+    "total_pedidos": "int"
+   },
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": {
+    "desconto_aplicavel": 308.99,
+    "faturamento_bruto": 6179.79,
+    "faturamento_liquido": 5870.8,
+    "pedidos_aprovados": 1,
+    "pedidos_cancelados": 0,
+    "pedidos_pendentes": 0,
+    "ticket_medio": 6179.79,
+    "total_pedidos": 1
+   },
+   "sucesso": true
+  }
+ },
+ {
+  "name": "admin query (SQL arbitrario)",
+  "method": "POST",
+  "path": "/admin/query",
+  "status": 200,
+  "shape": {
+   "dados": [
+    {
+     "1": "int"
+    }
+   ],
+   "sucesso": "bool"
+  },
+  "body": {
+   "dados": [
+    {
+     "1": 1
+    }
+   ],
+   "sucesso": true
+  }
+ },
+ {
+  "name": "admin reset-db",
+  "method": "POST",
+  "path": "/admin/reset-db",
+  "status": 200,
+  "shape": {
+   "mensagem": "str",
+   "sucesso": "bool"
+  },
+  "body": {
+   "mensagem": "Banco de dados resetado",
+   "sucesso": true
+  }
+ }
+]

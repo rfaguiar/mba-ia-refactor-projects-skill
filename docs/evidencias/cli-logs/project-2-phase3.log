@@ -1,0 +1,343 @@
+● Read refactoring-playbook.md
+  │ .github\skills\refactor-arch\references\refactoring-playbook.md
+  └ 380 lines read
+
+● Read mvc-guidelines.md
+  │ .github\skills\refactor-arch\references\mvc-guidelines.md
+  └ 74 lines read
+
+✗ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy; $p=Start-Process node -ArgumentLi
+  'src/app.js' -PassThru -WindowStyle Hidden -RedirectStandardOutput ..\base.log; Start-Sleep 2
+  function C($m,$u,$b){ try{ $r=Invoke-WebRequest -Method $m -Uri "]8;id=md-26y092;http://localhost:3000$uhttp://localhost:3000$u]8;;]8;;" ]8;;
+  -ContentType 'application/json' -Body $b -UseBasicParsing; "$m $u -> $($r.StatusCode) $($r.Content
+  }catch{ "$m $u -> $($_.Exception.Response.StatusCode.value__) $($_.ErrorDetails.Message)" } }
+  C POST /api/checkout '{"usr":"G","eml":"gui@x.com","pwd":"s","c_id":2,"card":"4111"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","pwd":"1","c_id":1,"card":"5111"}'
+  C POST /api/checkout '{"usr":"J"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","c_id":99,"card":"4"}'
+  C GET /api/admin/financial-report
+  C DELETE /api/users/1
+  C GET /api/admin/financial-report
+  Stop-Process -Id $p.Id
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy; $p=Start-Process node
+  │ -ArgumentList 'src/app.js' -PassThru -WindowStyle Hidden -RedirectStandardOutput ..\base.log;
+  │ Start-Sleep 2
+  │ function C($m,$u,$b){ try{ $r=Invoke-WebRequest -Method $m -Uri "http://localhost:3000$u"
+  │ -ContentType 'application/json' -Body $b -UseBasicParsing; "$m $u -> $($r.StatusCode) …
+  └ Command not executed. The 'Stop-Process' command must specify at least one process using -Id
+    <PID>.
+
+✗ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  $p=Start-Process node -ArgumentList 'src/app.js' -PassThru -WindowStyle Hidden
+  -RedirectStandardOutput ..\base.log
+  Start-Sleep 2
+  function C($m,$u,$b){ try{ $r=Invoke-WebRequest -Method $m -Uri "]8;id=md-26y092;http://localhost:3000$uhttp://localhost:3000$u]8;;]8;;" ]8;;
+  -ContentType 'application/json' -Body $b -UseBasicParsing; "$m $u -> $($r.StatusCode) $($r.Content
+  }catch{ "$m $u -> $($_.Exception.Response.StatusCode.value__) $($_.ErrorDetails.Message)" } }
+  C POST /api/checkout '{"usr":"G","eml":"gui@x.com","pwd":"s","c_id":2,"card":"4111"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","pwd":"1","c_id":1,"card":"5111"}'
+  C POST /api/checkout '{"usr":"J"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","c_id":99,"card":"4"}'
+  C GET /api/admin/financial-report
+  C DELETE /api/users/1
+  C GET /api/admin/financial-report
+  $id=$p.Id
+  Stop-Process -Id $id
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  │ $p=Start-Process node -ArgumentList 'src/app.js' -PassThru -WindowStyle Hidden
+  │ -RedirectStandardOutput ..\base.log
+  │ Start-Sleep 2
+  │ function C($m,$u,$b){ try{ $r=Invoke-WebRequest -Method $m -Uri "http://localhost:3000$u" …
+  └ Command not executed. The 'Stop-Process' command must specify at least one process using -Id
+    <PID>.
+
+Validator dislikes the variable; I'll use a PID file approach.
+
+● cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden -RedirectStandardOutput
+  ..\base.log
+  Start-Sleep 2
+  function C($m,$u,$b){ try{ $r=Invoke-WebRequest -Method $m -Uri "]8;id=md-26y092;http://localhost:3000$uhttp://localhost:3000$u]8;;]8;;" ]8;;
+  -ContentType 'application/json' -Body $b -UseBasicParsing; "$m $u -> $($r.StatusCode) $($r.Content
+  }catch{ "$m $u -> $($_.Exception.Response.StatusCode.value__) $($_.ErrorDetails.Message)" } }
+  C POST /api/checkout '{"usr":"G","eml":"gui@x.com","pwd":"s","c_id":2,"card":"4111"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","pwd":"1","c_id":1,"card":"5111"}'
+  C POST /api/checkout '{"usr":"J"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","c_id":99,"card":"4"}'
+  C GET /api/admin/financial-report
+  C DELETE /api/users/1
+  C GET /api/admin/financial-report
+  (Get-NetTCPConnection -LocalPort 3000 -State Listen).OwningProcess
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  │ Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden -RedirectStandardOutput
+  │ ..\base.log
+  │ Start-Sleep 2
+  │ function C($m,$u,$b){ try{ $r=Invoke-WebRequest -Method $m -Uri "http://localhost:3000$u" …
+  └ 19 lines…
+
+● Stop-Process -Id 28744; Start-Sleep 1; (Get-NetTCPConnection -LocalPort 3000 -State Listen (shell)
+  -ErrorAction SilentlyContinue).Count
+  │ Stop-Process -Id 28744; Start-Sleep 1; (Get-NetTCPConnection -LocalPort 3000 -State Listen
+  │ -ErrorAction SilentlyContinue).Count
+  └ 1 line…
+
+Baseline captured. Now creating the MVC structure.
+
+✗ Create index.js
+  │ src\config\index.js
+  └ Parent directory does not exist
+
+✗ Create constants.js
+  │ src\config\constants.js
+  └ Parent directory does not exist
+
+✗ Create connection.js
+  │ src\database\connection.js
+  └ Parent directory does not exist
+
+✗ Create passwordService.js
+  │ src\services\passwordService.js
+  └ Parent directory does not exist
+
+✗ Create schema.js
+  │ src\database\schema.js
+  └ Parent directory does not exist
+
+✗ Create userModel.js
+  │ src\models\userModel.js
+  └ Parent directory does not exist
+
+✗ Create courseModel.js
+  │ src\models\courseModel.js
+  └ Parent directory does not exist
+
+✗ Create enrollmentModel.js
+  │ src\models\enrollmentModel.js
+  └ Parent directory does not exist
+
+✗ Create errorHandler.js
+  │ src\middlewares\errorHandler.js
+  └ Parent directory does not exist
+
+✗ Create adminAuth.js
+  │ src\middlewares\adminAuth.js
+  └ Parent directory does not exist
+
+● cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy\src; mkdir                   (she…
+  config,database,models,services,middlewares,controllers,routes | Out-Null; dir | select Name
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy\src; mkdir
+  │ config,database,models,services,middlewares,controllers,routes | Out-Null; dir | select Name
+  └ 12 lines…
+
+● Create constants.js +4
+  └ src\config\constants.js
+
+● Create index.js +9
+  └ src\config\index.js
+
+● Create connection.js +48
+  └ src\database\connection.js
+
+● Create passwordService.js +32
+  └ src\services\passwordService.js
+
+● Create schema.js +22
+  └ src\database\schema.js
+
+● Create userModel.js +28
+  └ src\models\userModel.js
+
+● Create courseModel.js +24
+  └ src\models\courseModel.js
+
+● Create errorHandler.js +15
+  └ src\middlewares\errorHandler.js
+
+● Create enrollmentModel.js +26
+  └ src\models\enrollmentModel.js
+
+● Create adminAuth.js +29
+  └ src\middlewares\adminAuth.js
+
+● Create checkoutService.js +37
+  └ src\services\checkoutService.js
+
+● Create reportService.js +29
+  └ src\services\reportService.js
+
+● Create checkoutController.js +23
+  └ src\controllers\checkoutController.js
+
+● Create adminController.js +16
+  └ src\controllers\adminController.js
+
+● Create userController.js +17
+  └ src\controllers\userController.js
+
+● Create index.js +14
+  └ src\routes\index.js
+
+✗ Create app.js
+  │ src\app.js
+  └ Path already exists
+
+● Create .env.example +5
+
+● cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy\src; Remove-Item (shell)
+  AppManager.js,utils.js; dir | select Name
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy\src; Remove-Item
+  │ AppManager.js,utils.js; dir | select Name
+  └ 10 lines…
+
+● Remove-Item C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy\src\app.js (shell)
+  │ Remove-Item C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy\src\app.js
+  └ No Content
+
+● Create app.js +43
+  └ src\app.js
+
+✗ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden -RedirectStandardOutput ..\new.l
+  -RedirectStandardError ..\new.err
+  Start-Sleep 2
+  function C($m,$u,$b,$h=@{}){ try{ $r=Invoke-WebRequest -Method $m -Uri "]8;id=md-26y092;http://localhost:3000$uhttp://localhost:3000$u]8;;]8;;" ]8;;
+  -Headers $h -ContentType 'application/json' -Body $b -UseBasicParsing; "$m $u -> $($r.StatusCode)
+  $($r.Content)" }catch{ "$m $u -> $($_.Exception.Response.StatusCode.value__)
+  $($_.ErrorDetails.Message)" } }
+  C POST /api/checkout '{"usr":"G","eml":"gui@x.com","pwd":"s","c_id":2,"card":"4111"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","pwd":"1","c_id":1,"card":"5111"}'
+  C POST /api/checkout '{"usr":"J"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","c_id":99,"card":"4"}'
+  C GET /api/admin/financial-report
+  C DELETE /api/users/1
+  C GET /api/admin/financial-report
+  Get-Content ..\new.log, ..\new.err
+  $pidn=(Get-NetTCPConnection -LocalPort 3000 -State Listen).OwningProcess; Stop-Process -Id $pidn
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  │ Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden -RedirectStandardOutput
+  │ ..\new.log -RedirectStandardError ..\new.err
+  │ Start-Sleep 2
+  │ function C($m,$u,$b,$h=@{}){ try{ $r=Invoke-WebRequest -Method $m -Uri …
+  └ Command not executed. The 'Stop-Process' command must specify at least one process using -Id
+    <PID>.
+
+● cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden -RedirectStandardOutput ..\new.l
+  -RedirectStandardError ..\new.err
+  Start-Sleep 2
+  function C($m,$u,$b,$h=@{}){ try{ $r=Invoke-WebRequest -Method $m -Uri "]8;id=md-26y092;http://localhost:3000$uhttp://localhost:3000$u]8;;]8;;" ]8;;
+  -Headers $h -ContentType 'application/json' -Body $b -UseBasicParsing; "$m $u -> $($r.StatusCode)
+  $($r.Content)" }catch{ "$m $u -> $($_.Exception.Response.StatusCode.value__)
+  $($_.ErrorDetails.Message)" } }
+  C POST /api/checkout '{"usr":"G","eml":"gui@x.com","pwd":"s","c_id":2,"card":"4111"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","pwd":"1","c_id":1,"card":"5111"}'
+  C POST /api/checkout '{"usr":"J"}'
+  C POST /api/checkout '{"usr":"J","eml":"j@x.com","c_id":99,"card":"4"}'
+  C GET /api/admin/financial-report
+  C DELETE /api/users/1
+  C GET /api/admin/financial-report
+  Get-Content ..\new.log, ..\new.err
+  (Get-NetTCPConnection -LocalPort 3000 -State Listen).OwningProcess
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  │ Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden -RedirectStandardOutput
+  │ ..\new.log -RedirectStandardError ..\new.err
+  │ Start-Sleep 2
+  │ function C($m,$u,$b,$h=@{}){ try{ $r=Invoke-WebRequest -Method $m -Uri …
+  └ 22 lines…
+
+Matches baseline. Now stop it and test token/production modes.
+
+● Stop-Process -Id 27548                                                        (shell)           5s
+  Start-Sleep 1
+  cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  $env:ADMIN_TOKEN='tok'
+  Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden
+  Start-Sleep 2
+  foreach($h in @{},@{'X-Admin-Token'='tok'}){ try{(Invoke-WebRequest
+  ]8;id=md-1a7ibob;http://localhost:3000/api/admin/financial-reporthttp://localhost:3000/api/admin/financial-report]8;;]8;; -Headers $h ]8;;
+  -UseBasicParsing).StatusCode}catch{$_.Exception.Response.StatusCode.value__} }
+  (Get-NetTCPConnection -LocalPort 3000 -State Listen).OwningProcess
+  │ Stop-Process -Id 27548
+  │ Start-Sleep 1
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  │ $env:ADMIN_TOKEN='tok'
+  │ Start-Process node -ArgumentList 'src/app.js' -WindowStyle Hidden…
+  └ 8 lines…
+
+● Stop-Process -Id 24316                                                                   (shell)
+  cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  Get-ChildItem src -Recurse -File | Select-String -Pattern
+  'pk_live|senha_super|badCrypto|globalCache|console\.log\(.*cc' | Measure-Object | % Count
+  Get-ChildItem src -Recurse -File | Select-String -Pattern '"SELECT.*\+|`SELECT.*\$\{' |
+  Measure-Object | % Count
+  │ Stop-Process -Id 24316
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\ecommerce-api-legacy
+  │ Get-ChildItem src -Recurse -File | Select-String -Pattern
+  │ 'pk_live|senha_super|badCrypto|globalCache|console\.log\(.*cc' | Measure-Object | % Count
+  │ Get-ChildItem src -Recurse -File | Select-String -Pattern '"SELECT.*\+|`SELECT.*\$\{' | …
+  └ 3 lines…
+
+● cd C:\Users\rfagu\AppData\Local\Temp\stage; Remove-Item base.log,new.log,new.err -ErrorAction (sh…
+  SilentlyContinue; (Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction
+  SilentlyContinue).Count; dir
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage; Remove-Item base.log,new.log,new.err -ErrorAction
+  │ SilentlyContinue; (Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction
+  │ SilentlyContinue).Count; dir
+  └ 17 lines…
+
+```text
+================================
+PHASE 3: REFACTORING COMPLETE
+================================
+## New Project Structure
+src/
+├── app.js                      (composition root)
+├── config/{index.js, constants.js}
+├── database/{connection.js, schema.js}
+├── models/{userModel, courseModel, enrollmentModel}.js
+├── services/{checkoutService, reportService, passwordService}.js
+├── controllers/{checkoutController, adminController, userController}.js
+├── routes/index.js
+└── middlewares/{errorHandler.js, adminAuth.js}
+.env.example
+
+## Changes Applied
+- AP-01/15 → config lê `process.env`, sem segredos literais (PB-01)
+- AP-06 → log de cartão/chave removido (PB-01)
+- AP-03/07/08 → AppManager e utils removidos; models, services, controllers e rotas separados, com injeção de dependência (PB-03/04/05)
+- AP-05 → hash scrypt com salt e senha padrão aleatória; verifyPassword aceita texto puro legado (PB-11)
+- AP-04 → middleware `adminAuth` (header `X-Admin-Token`) nas rotas admin e de delete (PB-10)
+- AP-10 → relatório com um único JOIN (PB-06)
+- AP-11/12 → error handler central e validação de entrada (PB-07/08)
+- AP-14 → matrícula, pagamento e auditoria em transação; delete em cascata (PB-12)
+- AP-13/16/17 → código morto removido, constantes nomeadas, nomes claros
+
+## Validation
+  ✓ Application boots without errors
+  ✓ All endpoints respond correctly (3/3), com status e corpo iguais à baseline, salvo as mudanças abaixo
+  ✓ CRITICAL findings fixed: 5/5 (verificado por busca)
+  ✓ Com `ADMIN_TOKEN` definido: 403 sem o header e 200 com ele
+  ✗ Não testado: `NODE_ENV=production` sem token (retorna 403 por leitura do código) e login com banco legado (a API não tem endpoint de login; `verifyPassword` aceita texto puro por leitura do código)
+
+## Intentional behavior changes
+- `DELETE /api/users/:id` agora apaga matrículas e pagamentos do usuário. A mensagem de resposta mudou para "Usuário deletado junto com suas matrículas e pagamentos." O relatório deixa de mostrar "Unknown".
+- Rotas admin e de delete: com `ADMIN_TOKEN` exigem o header `X-Admin-Token`. Sem token, em produção respondem 403. Fora de produção continuam abertas, com aviso no log.
+- Checkout sem `pwd`: a senha padrão "123456" virou uma senha aleatória.
+- O usuário seed agora guarda a senha com hash scrypt.
+- `card` que não seja string retorna 400 em vez de 500.
+- Erros internos retornam "Erro interno" em vez de mensagens específicas.
+- O relatório sai ordenado por id do curso (antes a ordem era indeterminada).
+
+## Remaining findings
+- Não há autenticação ou autorização completa (login, sessões, RBAC); isso ficou fora do escopo.
+- O banco continua em memória por padrão (`DB_FILE`).
+- O pagamento ainda é simulado pelo prefixo do cartão.
+================================
+```
+
+
+
+Changes    +531 -1
+AI Credits 53.1 (3m 28s)
+Tokens     ↑ 1.3m (1.2m cached, 59.0k written) • ↓ 26.0k (2.4k reasoning)
+Resume     copilot --resume=4d219dbf-f940-45c1-9bf2-dec96c983062

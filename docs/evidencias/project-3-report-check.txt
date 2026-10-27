@@ -1,0 +1,14 @@
+PASS cabeçalho do template
+PASS campo Project
+PASS campo Stack
+PASS campo Files
+PASS termina com pedido de confirmação [y/n]
+PASS findings com campos e arquivo:linha válidos []
+PASS mínimo de 5 findings (15)
+PASS pelo menos 1 CRITICAL ou HIGH
+PASS findings ordenados CRITICAL → LOW
+PASS Summary confere com os findings {'CRITICAL': 3, 'HIGH': 2, 'MEDIUM': 6, 'LOW': 4}
+PASS Total confere
+PASS detecção de APIs deprecated incluída
+
+RESULT: PASS

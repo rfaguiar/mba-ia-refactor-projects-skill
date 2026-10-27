@@ -1,0 +1,89 @@
+● skill(refactor-arch)
+
+● Read report-template.md
+  │ .github\skills\refactor-arch\references\report-template.md
+  └ 49 lines read
+
+● Read anti-patterns-catalog.md
+  │ .github\skills\refactor-arch\references\anti-patterns-catalog.md
+  └ 134 lines read
+
+● List project files (shell)
+  │ Get-ChildItem -Recurse -File | Where-Object { $_.FullName -notmatch
+  │ '\\(\.venv|\.git|node_modules|__pycache__)\\' } | Select-Object -ExpandProperty FullName;
+  │ Get-ChildItem .. | Select Name
+  └ 30 lines…
+
+● Print files with line numbers (shell)
+  │ foreach($f in
+  │ 'app.py','controllers.py','database.py','models.py','requirements.txt','README.md'){ "=== $f";
+  │ $i=1; Get-Content $f | % { "{0}: {1}" -f $i++, $_ } }
+  └ 18 lines…
+
+● Read 1793110882503-copilot-tool-output-24128-088e2c80-8502-4348-a857-97efef3f6b65.txt
+  │ ~\AppData\Local\Temp\1793110882503-copilot-tool-output-24128-088e2c80-8502-4348-a857-97efef3f6b6
+  │ 5.txt
+  └ L1:330 (330 lines read)
+
+● Read 1793110882503-copilot-tool-output-24128-088e2c80-8502-4348-a857-97efef3f6b65.txt
+  │ ~\AppData\Local\Temp\1793110882503-copilot-tool-output-24128-088e2c80-8502-4348-a857-97efef3f6b6
+  │ 5.txt
+  └ L331:800 (470 lines read)
+
+● Create audit-project-1.md +115
+  └ ~\AppData\Local\Temp\stage\reports\audit-project-1.md
+
+```text
+================================
+PHASE 1: PROJECT ANALYSIS
+================================
+Language:      Python
+Framework:     Flask 3.1.1
+Dependencies:  flask-cors 5.0.1, sqlite3 (stdlib)
+Domain:        API de e-commerce (produtos, usuários, pedidos, relatórios)
+Architecture:  Monolito plano: app.py (rotas + admin inline), controllers.py (handlers com regra e SQL), models.py (SQL concatenado + regra + serialização), database.py (conexão global + DDL + seed)
+Source files:  4 files analyzed
+DB tables:     produtos, usuarios, pedidos, itens_pedido
+Endpoints:     18 (produtos 6, usuarios 3 + login, pedidos 4, relatorios 1, health, "/", admin 2)
+================================
+```
+
+Fase 2: relatório completo salvo em `C:\Users\rfagu\AppData\Local\Temp\stage\reports\audit-project-1.md`.
+
+```text
+================================
+ARCHITECTURE AUDIT REPORT
+================================
+Project: code-smells-project
+Stack:   Python + Flask 3.1.1
+Files:   4 analyzed | ~780 lines of code
+
+## Summary
+CRITICAL: 5 | HIGH: 3 | MEDIUM: 6 | LOW: 2
+
+[CRITICAL] SQL Injection (AP-02) — models.py (todas as queries concatenadas)
+[CRITICAL] Endpoints admin sem autenticação (AP-04) — app.py:47-78
+[CRITICAL] Senhas em texto puro e expostas na API (AP-05) — database.py:75-79, models.py:83,99,109-111,126-129
+[CRITICAL] Segredos hardcoded e debug fixo (AP-01) — app.py:7,8,88; controllers.py:286-289
+[CRITICAL] God Module (AP-03) — models.py, app.py, database.py
+[HIGH] Lógica de negócio/SQL nos controllers (AP-07) — controllers.py
+[HIGH] Estado global mutável (AP-08) — database.py:4-10
+[HIGH] Responsabilidades fora do lugar (AP-09)
+[MEDIUM] N+1 (AP-10); erros genéricos duplicados (AP-11); validação ausente (AP-12); duplicação (AP-13); sem transação/FK (AP-14); config fixa (AP-15)
+[LOW] Magic numbers (AP-16); prints como log e imports mortos (AP-17)
+
+Deprecated APIs: none found
+Total: 16 findings
+================================
+```
+
+Nenhum arquivo do projeto foi alterado.
+
+Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
+
+
+
+Changes    +115 -0
+AI Credits 18.93 (56s)
+Tokens     ↑ 283.3k (245.4k cached, 37.8k written) • ↓ 7.0k (1.0k reasoning)
+Resume     copilot --resume=c7d92ed6-7cf1-4f48-999a-ac1f64b967e0

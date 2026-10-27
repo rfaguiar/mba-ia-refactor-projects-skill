@@ -1,0 +1,31 @@
+PASS aplicação iniciou
+PASS index: GET / -> 200
+PASS health: GET /health -> 200
+PASS listar produtos: GET /produtos -> 200
+PASS produto 1: GET /produtos/1 -> 200
+PASS produto inexistente: GET /produtos/999 -> 404
+PASS busca por termo: GET /produtos/busca?q=Mouse -> 200
+PASS busca com filtros: GET /produtos/busca?categoria=informatica&preco_min=100&preco_max=3000 -> 200
+PASS criar produto: POST /produtos -> 201
+PASS criar produto invalido: POST /produtos -> 400
+PASS atualizar produto: PUT /produtos/1 -> 200
+PASS deletar produto: DELETE /produtos/11 -> 200
+PASS listar usuarios: GET /usuarios -> 200
+PASS usuario 1: GET /usuarios/1 -> 200
+PASS usuario inexistente: GET /usuarios/999 -> 404
+PASS criar usuario: POST /usuarios -> 201
+PASS criar usuario invalido: POST /usuarios -> 400
+PASS login ok: POST /login -> 200
+PASS login invalido: POST /login -> 401
+PASS login com SQL injection: POST /login -> 401
+PASS criar pedido: POST /pedidos -> 201
+PASS criar pedido sem itens: POST /pedidos -> 400
+PASS listar pedidos: GET /pedidos -> 200
+PASS pedidos do usuario: GET /pedidos/usuario/2 -> 200
+PASS atualizar status: PUT /pedidos/1/status -> 200
+PASS status invalido: PUT /pedidos/1/status -> 400
+PASS relatorio de vendas: GET /relatorios/vendas -> 200
+PASS admin query (SQL arbitrario): POST /admin/query -> 403
+PASS admin reset-db: POST /admin/reset-db -> 403
+
+RESULT project-1: PASS (28/28 endpoints)

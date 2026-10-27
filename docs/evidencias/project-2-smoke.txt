@@ -1,0 +1,10 @@
+PASS aplicação iniciou
+PASS checkout sucesso: POST /api/checkout -> 200
+PASS checkout usuario existente: POST /api/checkout -> 200
+PASS checkout recusado: POST /api/checkout -> 400
+PASS checkout bad request: POST /api/checkout -> 400
+PASS checkout curso inexistente: POST /api/checkout -> 404
+PASS relatorio financeiro: GET /api/admin/financial-report -> 200
+PASS deletar usuario: DELETE /api/users/1 -> 200
+
+RESULT project-2: PASS (7/7 endpoints)

@@ -1,0 +1,112 @@
+##### Saída real do Copilot CLI — Fases 1 e 2
+```text
+================================
+PHASE 1: PROJECT ANALYSIS
+================================
+Language:      Python
+Framework:     Flask 3.0.0
+Dependencies:  flask-sqlalchemy 3.1.1, flask-cors 4.0.0, marshmallow, requests, python-dotenv (these three are not used)
+Domain:        Task manager API (tasks, users, categories, reports)
+Architecture:  Partial layering (models/, routes/, services/, utils/). There are no controllers, business logic sits in the routes, and the services layer is unused.
+Source files:  15 files analyzed
+DB tables:     users, tasks, categories (SQLite)
+Endpoints:     22 (/, /health, 7 tasks, 7 users + /login, 2 reports, 4 categories)
+================================
+```
+
+I read all 15 source files and checked them against the catalog.
+
+```text
+================================
+ARCHITECTURE AUDIT REPORT
+================================
+Project: task-manager-api
+Stack:   Python + Flask 3.0.0 (Flask-SQLAlchemy 3.1.1, SQLite)
+Files:   15 analyzed | ~1160 lines of code
+
+## Summary
+CRITICAL: 3 | HIGH: 2 | MEDIUM: 6 | LOW: 4
+
+## Findings (short form; line numbers and details are in the report file)
+[CRITICAL] AP-01 Hardcoded secrets (SECRET_KEY, SMTP password) and debug=True: app.py:13,34; services/notification_service.py:9-10
+[CRITICAL] AP-04 Destructive endpoints and role changes with no authentication: routes/user_routes.py:119-125,134-151; routes/task_routes.py:225-238; routes/report_routes.py:211-223
+[CRITICAL] AP-05 md5 passwords, password hash returned in API responses, fake token: models/user.py:21,29,32; routes/user_routes.py:85-86,129,207-210
+[HIGH] AP-07 Business logic in routes, no controllers, NotificationService unused
+[HIGH] AP-09 /categories CRUD lives in report_routes; duplicated serialization and validation
+[MEDIUM] AP-10 N+1 queries
+[MEDIUM] AP-11 Bare `except:` and `print` for errors, no central handler
+[MEDIUM] AP-12 Missing input validation
+[MEDIUM] AP-13 "Overdue" rule duplicated in 6 places, plus dead helpers
+[MEDIUM] AP-14 Deleting a category or user leaves inconsistent or orphaned data
+[MEDIUM] AP-15 Config hardcoded
+[LOW] AP-16 Magic numbers
+[LOW] AP-17 Unused imports, `print` as log, one-letter names
+[LOW] DP-01 datetime.utcnow()
+[LOW] DP-01 Model.query.get()
+================================
+Total: 15 findings
+================================
+```
+
+I found no SQL injection. The `LIKE` search goes through the ORM and is parameterized.
+
+The full report is saved at `C:\Users\rfagu\AppData\Local\Temp\stage\reports\audit-project-3.md`. I changed no project files.
+
+Phase 2 complete. Proceed with refactoring (Phase 3)? [y/n]
+
+
+
+
+##### Saída real do Copilot CLI — Fase 3 (após confirmação y)
+```text
+================================
+PHASE 3: REFACTORING COMPLETE
+================================
+## New Project Structure
+app.py (create_app, entry point) · seed.py · .env.example
+config/       settings.py, constants.py
+models/       database.py, base.py, task.py, user.py, category.py
+routes/       task, user, category, report, health  (URL → controller)
+controllers/  task, user, category, report, health
+middlewares/  error_handler.py, auth.py
+services/     notification_service.py
+utils/        dates.py, validators.py
+
+## Changes Applied
+AP-01/AP-15 → config/settings.py reads environment variables; debug is off by default; no secrets in the code
+AP-04 → admin_required on the three DELETEs and on PUT /users when it changes role or active (PB-10)
+AP-05 → scrypt hashing; legacy md5/plain passwords still log in and are re-hashed on login; password removed from responses; signed token
+AP-07/09 → controllers added; /categories moved to its own routes file and controller; serialization and validation centralized
+AP-10 → joinedload and GROUP BY queries replace the per-row queries
+AP-11/12 → central error handler returns JSON; priority, date and query-parameter input is validated
+AP-13/16/17 → is_overdue used everywhere; constants; logging instead of print; unused helpers and imports removed
+DP-01 → utcnow helper and db.session.get replace the deprecated calls
+
+## Validation
+  ✓ Application boots without errors
+  ✓ All endpoints respond correctly (32/32 baseline calls, same status codes and JSON structure; the only differences are the removed password field)
+  ✓ CRITICAL findings fixed: 3/3 (verified by search; the only md5 left is the legacy login check)
+  ✓ Login works on a database created by the original version (md5 passwords)
+  ✓ Admin token tested: 403 without or with a wrong token, 200 with it, 403 in production with no token set
+
+## Intentional behavior changes
+- `password` is no longer in the responses of POST /users, GET /users/<id>, PUT /users/<id> and /login (AP-05).
+- The login `token` is now a signed token instead of `fake-jwt-token-<id>`.
+- Debug now defaults to off (AP-01).
+- DELETE /tasks, /users, /categories and PUT /users with `role` or `active` check `X-Admin-Token` (AP-04). If `ADMIN_TOKEN` isn't set, they still work outside production and log a warning. In production they return 403.
+- Invalid types that used to cause 500 errors now return 400: string priority, non-numeric `priority` or `user_id` in /tasks/search, empty body on PUT /categories, non-boolean `active`, empty `name`.
+
+## Remaining findings
+- No real authentication or authorization on any route (out of scope).
+- Category `color` is not validated, because rejecting values would change what the API accepts today.
+- AP-14 correction: for categories, SQLAlchemy already clears `category_id` on a category's tasks when it is deleted, so that part of the finding was a false positive. User deletion now cascades to their tasks in one transaction.
+- `NotificationService` is still not wired into any route. I kept it and moved its credentials to configuration.
+- `requirements.txt` lists `marshmallow` and `requests`, which nothing uses. I did not touch it.
+================================
+```
+
+I stopped the app. I restored `instance\tasks.db` to the original seeded legacy database.
+
+
+
+

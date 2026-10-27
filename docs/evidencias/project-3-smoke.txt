@@ -1,0 +1,29 @@
+PASS aplicação iniciou
+PASS index: GET / -> 200
+PASS health: GET /health -> 200
+PASS listar tasks: GET /tasks -> 200
+PASS task 1: GET /tasks/1 -> 200
+PASS task inexistente: GET /tasks/9999 -> 404
+PASS criar task: POST /tasks -> 201
+PASS criar task invalida: POST /tasks -> 400
+PASS atualizar task: PUT /tasks/11 -> 200
+PASS buscar tasks: GET /tasks/search?q=a&status=pending -> 200
+PASS stats: GET /tasks/stats -> 200
+PASS deletar task: DELETE /tasks/11 -> 200
+PASS listar users: GET /users -> 200
+PASS user 1: GET /users/1 -> 200
+PASS criar user: POST /users -> 201
+PASS criar user invalido: POST /users -> 400
+PASS atualizar user: PUT /users/4 -> 200
+PASS tasks do user: GET /users/1/tasks -> 200
+PASS login ok: POST /login -> 200
+PASS login invalido: POST /login -> 401
+PASS relatorio resumo: GET /reports/summary -> 200
+PASS relatorio do user: GET /reports/user/1 -> 200
+PASS listar categorias: GET /categories -> 200
+PASS criar categoria: POST /categories -> 201
+PASS atualizar categoria: PUT /categories/5 -> 200
+PASS deletar categoria: DELETE /categories/5 -> 200
+PASS deletar user: DELETE /users/4 -> 200
+
+RESULT project-3: PASS (26/26 endpoints)

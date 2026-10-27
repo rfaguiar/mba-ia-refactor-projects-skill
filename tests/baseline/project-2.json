@@ -1,0 +1,75 @@
+[
+ {
+  "name": "checkout sucesso",
+  "method": "POST",
+  "path": "/api/checkout",
+  "status": 200,
+  "shape": {
+   "enrollment_id": "int",
+   "msg": "str"
+  },
+  "body": null
+ },
+ {
+  "name": "checkout usuario existente",
+  "method": "POST",
+  "path": "/api/checkout",
+  "status": 200,
+  "shape": {
+   "enrollment_id": "int",
+   "msg": "str"
+  },
+  "body": null
+ },
+ {
+  "name": "checkout recusado",
+  "method": "POST",
+  "path": "/api/checkout",
+  "status": 400,
+  "shape": "text",
+  "body": null
+ },
+ {
+  "name": "checkout bad request",
+  "method": "POST",
+  "path": "/api/checkout",
+  "status": 400,
+  "shape": "text",
+  "body": null
+ },
+ {
+  "name": "checkout curso inexistente",
+  "method": "POST",
+  "path": "/api/checkout",
+  "status": 404,
+  "shape": "text",
+  "body": null
+ },
+ {
+  "name": "relatorio financeiro",
+  "method": "GET",
+  "path": "/api/admin/financial-report",
+  "status": 200,
+  "shape": [
+   {
+    "course": "str",
+    "revenue": "int",
+    "students": [
+     {
+      "paid": "int",
+      "student": "str"
+     }
+    ]
+   }
+  ],
+  "body": null
+ },
+ {
+  "name": "deletar usuario",
+  "method": "DELETE",
+  "path": "/api/users/1",
+  "status": 200,
+  "shape": "text",
+  "body": null
+ }
+]

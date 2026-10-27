@@ -1,0 +1,317 @@
+● Read mvc-guidelines.md
+  │ .github\skills\refactor-arch\references\mvc-guidelines.md
+  └ 74 lines read
+
+/ Search (grep)
+  │ "PB-10|PB-11" (.github\skills\refactor-arch\references\refactoring-playbook.md)
+  └ 86 lines found
+
+● Create baseline.py +62
+  └ ~\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files\baseline.py
+
+● Capture baseline from original app (shell)
+  │ $p="C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project";
+  │ $f="C:\Users\rfagu\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files"; &
+  │ "$p\.venv\Scripts\python" "$f\baseline.py" $p "$f\before.json" 2>&1 | Select -Last 40
+  └ 40 lines…
+
+✗ Create settings.py
+  │ config\settings.py
+  └ Parent directory does not exist
+
+✗ Create constants.py
+  │ config\constants.py
+  └ Parent directory does not exist
+
+✗ Create errors.py
+  │ utils\errors.py
+  └ Parent directory does not exist
+
+✗ Create security.py
+  │ utils\security.py
+  └ Parent directory does not exist
+
+✗ Create http.py
+  │ utils\http.py
+  └ Parent directory does not exist
+
+✗ Create validators.py
+  │ utils\validators.py
+  └ Parent directory does not exist
+
+● Create package directories (shell)
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project;
+  │ "config","models","views","controllers","services","middlewares","utils" | % { New-Item
+  │ -ItemType Directory -Force $_ | Out-Null }; Get-ChildItem -Directory | select Name
+  └ 12 lines…
+
+● Create errors.py +6
+  └ utils\errors.py
+
+● Create settings.py +19
+  └ config\settings.py
+
+● Create constants.py +17
+  └ config\constants.py
+
+● Create security.py +22
+  └ utils\security.py
+
+● Create http.py +6
+  └ utils\http.py
+
+● Create validators.py +118
+  └ utils\validators.py
+
+● Create database.py +103
+  └ models\database.py
+
+● Create produto_model.py +70
+  └ models\produto_model.py
+
+● Create usuario_model.py +38
+  └ models\usuario_model.py
+
+● Create pedido_model.py +76
+  └ models\pedido_model.py
+
+● Create sistema_model.py +24
+  └ models\sistema_model.py
+
+● Create admin_model.py +20
+  └ models\admin_model.py
+
+✗ Create sistema_model.py
+  │ models\sistema_model.py
+  └ Path already exists
+
+● Edit pedido_model.py +8 -4
+  └ models\pedido_model.py
+
+● Edit produto_model.py +14 -15
+  └ models\produto_model.py
+
+● Edit pedido_model.py +1 -1
+  └ models\pedido_model.py
+
+● Edit produto_model.py +4 -5
+  └ models\produto_model.py
+
+● Edit produto_model.py +2
+  └ models\produto_model.py
+
+● Edit sistema_model.py +3 -2
+  └ models\sistema_model.py
+
+● Edit admin_model.py +4 -5
+  └ models\admin_model.py
+
+● Create notificacao_service.py +16
+  └ services\notificacao_service.py
+
+● Create pedido_service.py +26
+  └ services\pedido_service.py
+
+● Create relatorio_service.py +27
+  └ services\relatorio_service.py
+
+● Create produto_controller.py +46
+  └ controllers\produto_controller.py
+
+● Create usuario_controller.py +35
+  └ controllers\usuario_controller.py
+
+● Create pedido_controller.py +25
+  └ controllers\pedido_controller.py
+
+● Create sistema_controller.py +56
+  └ controllers\sistema_controller.py
+
+● Create auth.py +26
+  └ middlewares\auth.py
+
+● Create error_handler.py +24
+  └ middlewares\error_handler.py
+
+● Create pedido_views.py +9
+  └ views\pedido_views.py
+
+● Create produto_views.py +11
+  └ views\produto_views.py
+
+● Create usuario_views.py +9
+  └ views\usuario_views.py
+
+● Create sistema_views.py +11
+  └ views\sistema_views.py
+
+● Create __init__.py +6
+  └ views\__init__.py
+
+✗ Create app.py
+  └ Path already exists
+
+● Remove legacy files, add package inits (shell)
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project; Remove-Item
+  │ app.py,models.py,controllers.py,database.py; Remove-Item -Recurse -Force __pycache__; foreach($d
+  │ in "config","models","controllers","services","middlewares","utils"){ if(-not (Test-Path
+  │ "$d\__init__.py")){ New-Item "$d\__init__.py" -ItemType File | Out-Null } }; ls | select Name
+  └ 13 lines…
+
+● Create app.py +28
+
+● Create .env.example +10
+
+Now run the baseline against the refactored app (also with admin enabled), then compare.
+
+✗ Run baseline on refactored app and diff (shell)
+  │ $p="C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project";
+  │ $f="C:\Users\rfagu\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files"; &
+  │ "$p\.venv\Scripts\python" "$f\baseline.py" $p "$f\after.json" 2>&1 | Select -Last 12
+  │ @'
+  │ import json…
+  └ 400 POST /pedidos
+    400 POST /pedidos
+    200 GET /pedidos
+    200 GET /pedidos/usuario/2
+    200 PUT /pedidos/1/status
+    400 PUT /pedidos/1/status
+    200 GET /relatorios/vendas
+    200 GET /health
+    403 POST /admin/query
+    403 POST /admin/query
+    403 POST /admin/reset-db
+    200 GET /produtos
+    InvalidOperation:
+    Line |
+    3 |  @'
+    |  ~~
+    | Error formatting a string: Input string was not in a correct format. Failure to parse near
+    offset 169. Expected an ASCII digit..
+    Failed with exit code 1
+
+● Create compare.py +23
+  └ ~\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files\compare.py
+
+● Compare before/after (shell)
+  │ $p="C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project";
+  │ $f="C:\Users\rfagu\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files"; &
+  │ "$p\.venv\Scripts\python" "$f\compare.py" $f
+  └ 31 lines…
+
+● Edit usuario_controller.py +2 -1
+  └ controllers\usuario_controller.py
+
+● Create compat.py +35
+  └ ~\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files\compat.py
+
+● Re-run diff and compat tests (shell)                                                            6s
+  │ $p="C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project";
+  │ $f="C:\Users\rfagu\.copilot\session-state\c7d92ed6-7cf1-4f48-999a-ac1f64b967e0\files"; &
+  │ "$p\.venv\Scripts\python" "$f\baseline.py" $p "$f\after.json" *> $null; &
+  │ "$p\.venv\Scripts\python" "$f\compare.py" $f | Select-String "DIFF|requests"; "---"; &
+  │ "$p\.venv\Scripts\python" "$f\compat.py" $p 2>&1 | Select-String -NotMatch …
+  └ 23 lines…
+
+✗ Boot real server and smoke test (shell)
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project;
+  │ $env:DB_PATH="$env:TEMP\boot_test.db"; $env:PORT="5055"; $pr=Start-Process -PassThru
+  │ -NoNewWindow -FilePath .venv\Scripts\python -ArgumentList "app.py" -RedirectStandardError
+  │ "$env:TEMP\boot_err.txt"; Start-Sleep 4; curl.exe -s -o NUL -w "%{http_code} "
+  │ http://localhost:5055/produtos; curl.exe -s -o NUL -w "%{http_code} " …
+  └ Command not executed. The 'Stop-Process' command must specify at least one process using -Id
+    <PID>.
+
+/ Search (grep)
+  │ "SECRET|PASSWORD|except:|except Exception|execute\([^)]*\+|print\(|debug=True" in
+  │ !{.venv,.github}/**
+  └ 8 lines found
+
+● Run server on port 5055 (shell)
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project;
+  │ $env:DB_PATH="$env:TEMP\boot_test.db"; $env:PORT="5055"; .venv\Scripts\python app.py
+  └ 1 line…
+
+● Smoke test live server (shell)
+  │ Start-Sleep 3; curl.exe -s -o NUL -w "%{http_code} " http://localhost:5055/produtos; curl.exe -s
+  │ -o NUL -w "%{http_code} " http://localhost:5055/health; curl.exe -s -X POST -o NUL -w
+  │ "%{http_code}`n" http://localhost:5055/admin/reset-db
+  └ 1 line…
+
+● Stop shell
+  └ 1 line…
+
+● Cleanup temp artifacts (shell)
+  │ cd C:\Users\rfagu\AppData\Local\Temp\stage\code-smells-project; Remove-Item
+  │ "$env:TEMP\boot_test.db" -ErrorAction SilentlyContinue; Get-ChildItem -Recurse -Filter
+  │ __pycache__ -Directory | ? FullName -notmatch '\.venv' | Remove-Item -Recurse -Force; Test-Path
+  │ loja.db; (Get-ChildItem -Recurse -Filter *.py | ? FullName -notmatch '\.venv' | Get-Content |
+  │ Measure-Object -Line).Lines
+  └ 2 lines…
+
+Update README.
+
+● Edit README.md +9
+
+```text
+================================
+PHASE 3: REFACTORING COMPLETE
+================================
+## New Project Structure
+code-smells-project/
+├── app.py                       # composition root (create_app)
+├── .env.example
+├── config/        settings.py, constants.py
+├── models/        database.py, produto_model.py, usuario_model.py,
+│                  pedido_model.py, sistema_model.py, admin_model.py
+├── views/         produto_, usuario_, pedido_, sistema_views.py (blueprints)
+├── controllers/   produto_, usuario_, pedido_, sistema_controller.py
+├── services/      pedido_service, relatorio_service, notificacao_service
+├── middlewares/   error_handler.py, auth.py (admin_required)
+└── utils/         errors.py, validators.py, security.py, http.py
+(removidos: models.py, controllers.py, database.py antigos)
+
+## Changes Applied
+AP-01/15 → config via env, sem segredos; debug off por padrão (PB-01)
+AP-02 → queries 100% parametrizadas (PB-02)
+AP-05 → hash pbkdf2 com migração transparente de senha legada; `senha` removida das respostas (PB-11)
+AP-03/07/09 → camadas models/views/controllers/services (PB-03/04)
+AP-08 → conexão por requisição (flask.g) + init_db no boot (PB-05)
+AP-10 → N+1 eliminado com JOIN/json_each (PB-06)
+AP-12/13 → validadores e serializadores únicos (PB-08/09)
+AP-14 → criação de pedido transacional com rollback (PB-12)
+AP-11 → error handler central (PB-07)
+AP-04 → /admin/* protegidos por flag + token (PB-10)
+AP-16/17 → constantes, logging no lugar de print (PB-13)
+
+## Validation
+  ✓ Application boots without errors (servidor real: /produtos 200, /health 200)
+  ✓ All endpoints respond correctly (18/18 existentes respondem; mesmos status e estrutura, exceto diferenças intencionais abaixo)
+  ✓ CRITICAL findings fixed: 5/5 (busca: sem segredos literais, sem SQL concatenado, sem print/except genérico)
+  ✓ Compatibilidade: banco legado (senha em texto puro) permite login e é regravado com hash
+  ✓ SQL injection em login e busca testada e neutralizada
+
+## Intentional behavior changes
+- GET /usuarios e /usuarios/<id>: campo `senha` removido (AP-05)
+- GET /health: removidos `secret_key` e `debug`; `db_path` agora só o nome do arquivo (AP-01)
+- POST /admin/reset-db e /admin/query: 403 por padrão; habilitar com ENABLE_ADMIN_ENDPOINTS=1 + ADMIN_TOKEN e header X-Admin-Token (AP-04)
+- Erros inesperados: 500 com mensagem genérica (antes vazava str(e)) (AP-11)
+- Entradas inválidas que davam 500 agora dão 400 (tipos errados, JSON inválido, itens de pedido malformados, quantidade ≤ 0, preco_min/max não numéricos) (AP-12)
+- Nomes com aspas (ex.: `Ok'Nome`) agora criam o produto (201) em vez de 500
+- PUT /produtos/<id> agora aplica as mesmas validações da criação (nome 2–200 caracteres, categoria válida)
+- Segredo, debug e porta vêm de variáveis de ambiente; debug desligado por padrão
+
+## Remaining findings
+- Sem autenticação/autorização real nas demais rotas e sem token de sessão no login (fora do escopo)
+- Cancelar pedido só registra log; o estoque não é devolvido (comportamento original)
+- Sem chaves estrangeiras; deletar produto deixa itens órfãos (mudar schema em bancos existentes exige migração)
+- Checagem de estoque e baixa não são atômicas contra requisições concorrentes
+================================
+```
+
+
+
+Changes    +1166 -33
+AI Credits 93.1 (5m 46s)
+Tokens     ↑ 2.4m (2.3m cached, 89.6k written) • ↓ 47.8k (10.9k reasoning)
+Resume     copilot --resume=c7d92ed6-7cf1-4f48-999a-ac1f64b967e0

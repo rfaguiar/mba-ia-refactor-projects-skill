@@ -1,0 +1,5 @@
+PASS P1: login com senha em texto puro de banco legado
+PASS P1: login repetido (após possível migração do hash)
+PASS P1: senha errada -> 401
+
+RESULT: PASS

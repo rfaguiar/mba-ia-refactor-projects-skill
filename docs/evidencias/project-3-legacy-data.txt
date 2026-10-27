@@ -1,0 +1,5 @@
+PASS P3: login com hash MD5 de banco legado
+PASS P3: login repetido (após possível migração do hash)
+PASS P3: senha errada -> 401
+
+RESULT: PASS
