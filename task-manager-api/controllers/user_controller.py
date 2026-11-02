@@ -2,7 +2,7 @@ from flask import jsonify
 from itsdangerous import URLSafeTimedSerializer
 
 from config import settings
-from config.constants import MIN_PASSWORD_LENGTH, VALID_ROLES
+from config.constants import DEFAULT_ROLE, MIN_PASSWORD_LENGTH, VALID_ROLES
 from middlewares.auth import admin_required, check_admin_token
 from middlewares.error_handler import (
     ConflictError,
@@ -62,7 +62,7 @@ def create_user():
     name = data.get('name')
     email = data.get('email')
     password = data.get('password')
-    role = data.get('role', 'user')
+    role = DEFAULT_ROLE
 
     if not name:
         raise ValidationError('Nome é obrigatório')

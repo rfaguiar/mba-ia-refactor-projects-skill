@@ -102,6 +102,11 @@ Use este catálogo como checklist: percorra **todos** os itens contra **todo** o
 - **Sinais:** variáveis de 1–2 letras (`u`, `e`, `p`, `cc`, `cid`); imports/exports sem uso (`import os, sys, json`); `print`/`console.log` como logging; comentários obsoletos.
 - **Impacto:** legibilidade, ruído.
 
+### AP-18 — Escalonamento de privilégio por campos enviados em rotas anônimas
+- **Severidade:** CRITICAL → playbook **PB-15**
+- **Sinais:** cadastro público ou outra rota sem autorização lê `role`, `is_admin`, `permissions` ou campos equivalentes do corpo e os persiste/aplica diretamente ou via atribuição em massa.
+- **Impacto:** qualquer cliente pode criar usuário administrador ou obter permissões elevadas.
+
 ---
 
 ## APIs deprecated / obsoletas (detecção obrigatória)

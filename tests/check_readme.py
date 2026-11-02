@@ -1,4 +1,4 @@
-"""Valida o README.md (checklist marcado, enunciado preservado) e docs/solucao.md (seções A–D, links e contagens)."""
+"""Valida o README.md (enunciado, checklist, seções A–D, links e contagens)."""
 import re
 import sys
 from pathlib import Path
@@ -17,15 +17,15 @@ def main():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     check(readme.count("- [x]") == 19 and "- [ ]" not in readme, "README: checklist de validação totalmente marcado (19/19)")
     check("# Criação de Skills" in readme and "## Critérios de Aceite" in readme, "README: enunciado original preservado")
+    check("[relatório da reexecução](reports/audit-project-3-feedback.md)" in readme,
+          "README: execução da skill após feedback está documentada")
 
-    solucao_path = ROOT / "docs" / "solucao.md"
-    readme = solucao_path.read_text(encoding="utf-8")
     for title in ("## A) Análise Manual", "## B) Construção da Skill", "## C) Resultados", "## D) Como Executar"):
         check(title in readme, f"seção '{title}'")
 
     broken = []
     for target in re.findall(r"\]\((?!https?:)([^)#]+)\)", readme):
-        if not (solucao_path.parent / target).exists():
+        if not (ROOT / target).exists():
             broken.append(target)
     check(not broken, f"links locais existentes {broken}")
 

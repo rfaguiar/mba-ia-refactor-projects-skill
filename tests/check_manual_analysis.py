@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DOC = ROOT / "docs" / "solucao.md"
+DOC = ROOT / "README.md"
 PROJECTS = ["code-smells-project", "ecommerce-api-legacy", "task-manager-api"]
 BASELINE = "6d1ce62"
 

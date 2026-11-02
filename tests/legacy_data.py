@@ -47,6 +47,16 @@ def post(path, body):
         return e.code
 
 
+def post_json(path, body):
+    req = urllib.request.Request(f"http://127.0.0.1:5000{path}", method="POST", data=json.dumps(body).encode(),
+                                 headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as response:
+            return response.status, json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        return e.code, json.loads(e.read().decode("utf-8"))
+
+
 def run_app(project, prepare):
     cwd = Path(os.environ.get("SMOKE_PROJECT_ROOT", ROOT)) / project
     env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1")
@@ -99,6 +109,14 @@ def project3():
         check(post("/login", {"email": "maria@email.com", "password": "abcd"}) == 200,
               "P3: login repetido (após possível migração do hash)")
         check(post("/login", {"email": "maria@email.com", "password": "errada"}) == 401, "P3: senha errada -> 401")
+        status, user = post_json("/users", {
+            "name": "Anonymous Admin",
+            "email": "anonymous-admin@example.test",
+            "password": "password123",
+            "role": "admin",
+        })
+        check(status == 201 and user.get("role") == "user",
+              "P3: cadastro anônimo ignora role=admin e cria usuário comum")
     finally:
         stop(proc)
 

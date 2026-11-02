@@ -1,6 +1,6 @@
 # Playbook de Refatoração (Fase 3)
 
-Padrões concretos de transformação. Cada padrão tem **Antes / Depois**; os exemplos usam Python/Flask e Node/Express, mas a **ideia** vale para qualquer stack: traduza para a linguagem detectada. Aplique na ordem: PB-01 → PB-02 → PB-11 → PB-03 → PB-04 → PB-05 → PB-06 → PB-08 → PB-09 → PB-12 → PB-07 → PB-10 → PB-13 → PB-14.
+Padrões concretos de transformação. Cada padrão tem **Antes / Depois**; os exemplos usam Python/Flask e Node/Express, mas a **ideia** vale para qualquer stack: traduza para a linguagem detectada. Aplique na ordem: PB-01 → PB-02 → PB-11 → PB-03 → PB-04 → PB-05 → PB-06 → PB-08 → PB-09 → PB-12 → PB-07 → PB-10 → PB-13 → PB-14 → PB-15.
 
 ---
 
@@ -360,6 +360,22 @@ Após substituir, rode a aplicação e confira que os warnings de depreciação 
 
 ---
 
+## PB-15 — Ignorar privilégios enviados por rotas anônimas (AP-18)
+
+**Antes**
+```python
+role = request.get_json().get("role", DEFAULT_ROLE)
+user = User(name=name, email=email, role=role)
+```
+**Depois**
+```python
+# Cadastro público: o corpo não pode escolher privilégios.
+user = User(name=name, email=email, role=DEFAULT_ROLE)
+```
+Em qualquer rota anônima, descarte campos de privilégio do corpo (`role`, `is_admin`, `permissions` e equivalentes) e atribua o menor privilégio no servidor. Não basta validar se o valor recebido pertence a uma lista de papéis válidos. Se a aplicação tiver um fluxo legítimo de criação privilegiada, exija autorização verificada no servidor antes de aplicar o papel; nunca use o corpo anônimo como fonte de autorização. Adicione um teste sem token que tente solicitar papel elevado e confirme que o recurso criado permanece no papel padrão.
+
+---
+
 ## Mapa anti-pattern → padrão
 
 | Anti-pattern | Padrão |
@@ -378,3 +394,4 @@ Após substituir, rode a aplicação e confira que os warnings de depreciação 
 | AP-14 | PB-12 |
 | AP-16, AP-17 | PB-13 |
 | DP-01..03 | PB-14 |
+| AP-18 | PB-15 |

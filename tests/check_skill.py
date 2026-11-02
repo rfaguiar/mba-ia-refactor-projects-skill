@@ -49,6 +49,8 @@ def main():
     cat = (skill / "references" / "anti-patterns-catalog.md").read_text(encoding="utf-8")
     aps = re.findall(r"^### (AP-\d+)", cat, re.M)
     check(len(aps) >= 8, f"catálogo tem >= 8 anti-patterns ({len(aps)})")
+    check("AP-18" in aps and "PB-15" in cat,
+          "catálogo detecta escalonamento de privilégio em rotas anônimas")
     for sev in ("CRITICAL", "HIGH", "MEDIUM", "LOW"):
         check(re.search(rf"\*\*Severidade:\*\* .*{sev}", cat) is not None, f"catálogo cobre severidade {sev}")
     check(len(re.findall(r"^### DP-\d+", cat, re.M)) >= 2 and "deprecated" in cat.lower(),
@@ -59,6 +61,8 @@ def main():
     pb = (skill / "references" / "refactoring-playbook.md").read_text(encoding="utf-8")
     pbs = re.findall(r"^## (PB-\d+)", pb, re.M)
     check(len(pbs) >= 8, f"playbook tem >= 8 padrões ({len(pbs)})")
+    check("PB-15" in pbs and "role" in pb and "rota anônima" in pb.lower(),
+          "playbook impede papel privilegiado enviado por cadastro anônimo")
     check(pb.count("**Antes**") >= 8 and pb.count("**Depois**") >= 8, "playbook tem blocos Antes/Depois (>= 8)")
     check(set(re.findall(r"PB-\d+", " ".join(re.findall(r"→ playbook \*\*([^*]+)\*\*", cat)))) <= set(pbs),
           "todo PB citado no catálogo existe no playbook")
